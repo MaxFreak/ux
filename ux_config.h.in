@@ -1,0 +1,11 @@
+#cmakedefine USE_SDL
+#cmakedefine USE_IN
+#cmakedefine USE_GL
+
+// the configured options and settings for Tutorial
+#define BUILD_VERSION_MAJOR @BUILD_VERSION_MAJOR@
+#define BUILD_VERSION_MINOR @BUILD_VERSION_MINOR@
+#define BUILD_VERSION_MICRO @BUILD_VERSION_MICRO@
+
+
+
