@@ -18,7 +18,7 @@ public:
 
     ~gp_wrap_ogl_sdl(void);
 
-    void set_screen_size(const ux_uint &uiWidth, const ux_uint &uiHeight);
+    void set_screen_size(const ux_uint &width, const ux_uint &height);
 
     ux_bool init(const ux_uint &uiScreenWidth, const ux_uint &uiScreenHeight);
 

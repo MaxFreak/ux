@@ -160,8 +160,8 @@ namespace geo
         return !(Left == Right);
     }
 
-    typedef geo_rectangle<int> IntRect;
-    typedef geo_rectangle<float> FloatRect;
+    typedef geo_rectangle<int> int_rect;
+    typedef geo_rectangle<float> float_rect;
 
 } // namespace geo
 

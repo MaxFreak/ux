@@ -93,7 +93,7 @@ void gp_wrap_ogl_sdl::de_init(void)
     gp_wrap_gl::de_init();
 }
 
-void gp_wrap_ogl_sdl::set_screen_size(const ux_uint &uiWidth, const ux_uint &uiHeight)
+void gp_wrap_ogl_sdl::set_screen_size(const ux_uint &width, const ux_uint &height)
 {
     // NOTE/TODO:
     // This re-creates the surface OGL renders into; it is initially filled black.
@@ -102,7 +102,7 @@ void gp_wrap_ogl_sdl::set_screen_size(const ux_uint &uiWidth, const ux_uint &uiH
     // with SDL_OPENGL can not be accessed for blitting.
     // Can this be done?
 
-    if ((ms_pSDLSurface = SDL_SetVideoMode(uiWidth, uiHeight, 0,
+    if ((ms_pSDLSurface = SDL_SetVideoMode(width, height, 0,
                                            SDL_OPENGL | SDL_ANYFORMAT | SDL_DOUBLEBUF | SDL_RESIZABLE)) == NULL)
     {
         UX_TRACE_ERROR(
@@ -110,7 +110,7 @@ void gp_wrap_ogl_sdl::set_screen_size(const ux_uint &uiWidth, const ux_uint &uiH
     }
     else
     {
-        gp_wrap_gl::set_screen_size(uiWidth, uiHeight);
+        gp_wrap_gl::set_screen_size(width, height);
     }
 }
 

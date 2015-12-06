@@ -105,12 +105,12 @@ void gp_wrap::reset_cliprect()
 {
 }
 
-void gp_wrap::get_cliprect(geo::FloatRect &ClipRect) const
+void gp_wrap::get_cliprect(geo::float_rect &ClipRect) const
 {
     ClipRect = m_ClippingRect;
 }
 
-void gp_wrap::set_cliprect(const geo::FloatRect &NewClipRect)
+void gp_wrap::set_cliprect(const geo::float_rect &NewClipRect)
 {
     // The clipping rectangle may not exceed the invalidated region of the screen. Therefore
     // we calculate the intersecting rectangle of the clipping rect with the invalidated rect.
@@ -130,7 +130,7 @@ void gp_wrap::set_cliprect(const geo::FloatRect &NewClipRect)
 
 void gp_wrap::reset_invalidated_rect()
 {
-    m_InvalidatedRect = geo::FloatRect();
+    m_InvalidatedRect = geo::float_rect();
 }
 
 void gp_wrap::reset_invalidation()
@@ -142,7 +142,7 @@ void gp_wrap::reset_invalidation()
 
 void gp_wrap::set_invalidated_rect(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2)
 {
-    m_InvalidatedRect = geo::FloatRect(vX1, vY1, vX2, vY2);
+    m_InvalidatedRect = geo::float_rect(vX1, vY1, vX2, vY2);
 
 #ifdef GUILIANI_GFXDEBUG
     GUILOG(GUI_TRACE_DEBUG,"CGfxWrap::set_invalidated_rect"
@@ -159,7 +159,7 @@ ux_bool gp_wrap::set_nof_imagesImpl(const ux_uint uiNOFImages){
     return false;
 }
 
-void gp_wrap::start_handle_draw(const geo::FloatRect &crkClipRect)
+void gp_wrap::start_handle_draw(const geo::float_rect &crkClipRect)
 {
 //    GETGUI.HandleDraw(crkClipRect);
 }
@@ -187,11 +187,11 @@ void gp_wrap::redraw()
     if( m_bDoubleBufferingEnforcesFlipping)
     {
 //        // For intermediate storage during "merging" of this frame's and the last frame's invalidated rects
-//        eC_TListDoubleLinked <geo::FloatRect> kTempInvalidatedRectList;
+//        eC_TListDoubleLinked <geo::float_rect> kTempInvalidatedRectList;
 //        // Backup current invalidated rect list
 //        kTempInvalidatedRectList = m_kInvalidatedRectList;
 //        // Merge lists of invalidated rects, by invalidating all rects form the last frame once again
-//        eC_TListDoubleLinked<geo::FloatRect>::SafeIterator sIter;
+//        eC_TListDoubleLinked<geo::float_rect>::SafeIterator sIter;
 //        FOR_ALL_FORWARD_SAFE (sIter, m_kLastFrameInvalidatedRectList)
 //        {
 //            invalidate_rect( *sIter);
@@ -237,7 +237,7 @@ void gp_wrap::redraw()
 //        }
 //
 //        // iterate over list of invalidated regions
-//        eC_TListDoubleLinked<geo::FloatRect>::SafeIterator sIter;
+//        eC_TListDoubleLinked<geo::float_rect>::SafeIterator sIter;
 //        FOR_ALL_FORWARD_SAFE (sIter, m_kInvalidatedRectList)
 //        {
 //            // For every invalidated region...
@@ -273,13 +273,13 @@ void gp_wrap::redraw()
     m_bCurrentlyRedrawing = false;
 }
 
-void gp_wrap::invalidate_rect(const geo::FloatRect &kInvalidRect)
+void gp_wrap::invalidate_rect(const geo::float_rect &invalid_rect)
 {
-//    if( !kInvalidRect.IsComprehensive() || m_bCurrentlyRedrawing) return;
-//    geo::FloatRect kNewRect( kInvalidRect);
+//    if( !invalid_rect.IsComprehensive() || m_bCurrentlyRedrawing) return;
+//    geo::float_rect kNewRect( invalid_rect);
 //
 //    // Merge this invalidated region into the list of other currently invalidated ones
-//    eC_TListDoubleLinked<geo::FloatRect>::SafeIterator sIter;
+//    eC_TListDoubleLinked<geo::float_rect>::SafeIterator sIter;
 //    FOR_ALL_FORWARD_SAFE (sIter, m_kInvalidatedRectList)
 //    {
 //        // If the new invalidated rect overlaps with another one in the list, unify them,
@@ -299,32 +299,32 @@ void gp_wrap::invalidate_rect(const geo::FloatRect &kInvalidRect)
 //    m_kInvalidatedRectList.AddAtEnd( kNewRect);
 }
 
-void gp_wrap::set_screen_size(const ux_uint &uiWidth, const ux_uint &uiHeight)
+void gp_wrap::set_screen_size(const ux_uint &width, const ux_uint &height)
 {
 //    GUILOG(GUI_TRACE_WARNING,
 //           "CGfxWrap::set_screen_size: This method is not implemented.\n");
 }
 
-void gp_wrap::blit_img_nine_patch(const ImageResource_t &eID, const geo::FloatRect &kAbsRect, const ux_uint uiTopBorder,
-                                  const ux_uint uiBottomBorder, const ux_uint uiLeftBorder, const ux_uint uiRightBorder,
+void gp_wrap::blit_img_nine_patch(const image_id &id, const geo::float_rect &abs_rect, const ux_uint top_border,
+                                  const ux_uint bottom_border, const ux_uint left_border, const ux_uint right_border,
                                   const ux_ubyte &alpha)
 {
 //    // Early return if the image is illegal
-//    if( eID == DUMMY_IMAGE) return;
+//    if( id == DUMMY_IMAGE) return;
 //
 //    // Automatic Nine-Patch-Image stretching
 //
 //    // Initialize some values to simplify and optimize drawing code below
-//    ux_uint uiImageWidth = GETGFX.get_img_width(eID);
-//    ux_uint uiImageHeight = GETGFX.get_img_height(eID);
-//    ux_value vDstWidth = kAbsRect.GetWidth();
-//    ux_value vDstHeight = kAbsRect.GetHeight();
+//    ux_uint uiImageWidth = GETGFX.get_img_width(id);
+//    ux_uint uiImageHeight = GETGFX.get_img_height(id);
+//    ux_value vDstWidth = abs_rect.GetWidth();
+//    ux_value vDstHeight = abs_rect.GetHeight();
 //
 //    // Use simple blit if possible
 //    if( eC_FromInt(uiImageWidth) >= vDstWidth &&
 //        eC_FromInt(uiImageHeight) >= vDstHeight)
 //    {
-//        return blit_img_ext(eID, kAbsRect, true, alpha );
+//        return blit_img_ext(id, abs_rect, true, alpha );
 //    }
 //
 //    ux_value vActualLeftBorder = eC_FromInt(0);
@@ -333,11 +333,11 @@ void gp_wrap::blit_img_nine_patch(const ImageResource_t &eID, const geo::FloatRe
 //    if( eC_FromInt(uiImageWidth) < vDstWidth)
 //    {
 //        // Left Border must not be larger than the original image width
-//        vActualLeftBorder = eC_Min( eC_FromInt(uiLeftBorder), eC_FromInt(uiImageWidth) );
+//        vActualLeftBorder = eC_Min( eC_FromInt(left_border), eC_FromInt(uiImageWidth) );
 //        // It must also not be larger than the destination image width
 //        vActualLeftBorder = eC_Min( vActualLeftBorder, vDstWidth);
 //        // Right Border must not be larger than the original image width
-//        vActualRightBorder = eC_Min( eC_FromInt(uiRightBorder), eC_FromInt(uiImageWidth) );
+//        vActualRightBorder = eC_Min( eC_FromInt(right_border), eC_FromInt(uiImageWidth) );
 //        // Left Border + Right Border must not be larger than the total image width
 //        vActualRightBorder = eC_Min( vActualRightBorder, eC_FromInt(uiImageWidth)-vActualLeftBorder );
 //    }
@@ -353,11 +353,11 @@ void gp_wrap::blit_img_nine_patch(const ImageResource_t &eID, const geo::FloatRe
 //    if( eC_FromInt(uiImageHeight) < vDstHeight )
 //    {
 //        // top Border must not be larger than the original image height
-//        vActualTopBorder = eC_Min( eC_FromInt(uiTopBorder), eC_FromInt(uiImageHeight) );
+//        vActualTopBorder = eC_Min( eC_FromInt(top_border), eC_FromInt(uiImageHeight) );
 //        // It must also not be larger than the destination image height
 //        vActualTopBorder = eC_Min( vActualTopBorder, vDstHeight);
 //        // Bottom Border must not be larger than the original image height
-//        vActualBottomBorder = eC_Min( eC_FromInt(uiBottomBorder), eC_FromInt(uiImageHeight));
+//        vActualBottomBorder = eC_Min( eC_FromInt(bottom_border), eC_FromInt(uiImageHeight));
 //        // Top Border + Bottom Border must not be larger than the total image height
 //        vActualBottomBorder = eC_Min( vActualBottomBorder, eC_FromInt(uiImageHeight) - vActualTopBorder);
 //    }
@@ -373,23 +373,23 @@ void gp_wrap::blit_img_nine_patch(const ImageResource_t &eID, const geo::FloatRe
 //        if( uiActualLeftBorder > 0)
 //        {
 //            //Top Left
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               0, 0, uiActualLeftBorder, uiActualTopBorder,
-//                               kAbsRect.GetX1(), kAbsRect.GetY1(), vActualLeftBorder, vActualTopBorder, alpha);
+//                               abs_rect.GetX1(), abs_rect.GetY1(), vActualLeftBorder, vActualTopBorder, alpha);
 //        }
 //        if( uiActualRightBorder > 0)
 //        {
 //            //Top Right
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiImageWidth-uiActualRightBorder, 0, uiActualRightBorder, uiActualTopBorder,
-//                               kAbsRect.GetX2()-uiActualRightBorder, kAbsRect.GetY1(), vActualRightBorder, vActualTopBorder, alpha);
+//                               abs_rect.GetX2()-uiActualRightBorder, abs_rect.GetY1(), vActualRightBorder, vActualTopBorder, alpha);
 //        }
 //        if( uiCenterSourceWidth > 0) // If source blit image width > 0
 //        {
 //            //Top center
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiActualLeftBorder, 0, uiCenterSourceWidth, uiActualTopBorder,
-//                               kAbsRect.GetX1()+vActualLeftBorder, kAbsRect.GetY1(), vCenterDstWidth, vActualTopBorder, alpha);
+//                               abs_rect.GetX1()+vActualLeftBorder, abs_rect.GetY1(), vCenterDstWidth, vActualTopBorder, alpha);
 //        }
 //    }
 //
@@ -401,50 +401,50 @@ void gp_wrap::blit_img_nine_patch(const ImageResource_t &eID, const geo::FloatRe
 //        if( uiActualLeftBorder > 0)
 //        {
 //            //Middle Left
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               0, uiActualTopBorder, uiActualLeftBorder, uiMiddleSrcHeight,
-//                               kAbsRect.GetX1(), kAbsRect.GetY1()+vActualTopBorder, vActualLeftBorder, vMiddleDstHeight, alpha);
+//                               abs_rect.GetX1(), abs_rect.GetY1()+vActualTopBorder, vActualLeftBorder, vMiddleDstHeight, alpha);
 //        }
 //        if( uiActualRightBorder > 0)
 //        {
 //            //Middle Right
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiImageWidth-uiActualRightBorder, uiActualTopBorder, uiActualRightBorder, uiMiddleSrcHeight,
-//                               kAbsRect.GetX2()-vActualRightBorder, kAbsRect.GetY1()+vActualTopBorder, vActualRightBorder, vMiddleDstHeight, alpha);
+//                               abs_rect.GetX2()-vActualRightBorder, abs_rect.GetY1()+vActualTopBorder, vActualRightBorder, vMiddleDstHeight, alpha);
 //        }
 //        if( uiCenterSourceWidth > 0) // If source blit image width > 0
 //        {
 //            //Middle center
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiActualLeftBorder, uiActualTopBorder, uiCenterSourceWidth, uiMiddleSrcHeight,
-//                               kAbsRect.GetX1()+vActualLeftBorder, kAbsRect.GetY1()+vActualTopBorder, vCenterDstWidth, vMiddleDstHeight, alpha );
+//                               abs_rect.GetX1()+vActualLeftBorder, abs_rect.GetY1()+vActualTopBorder, vCenterDstWidth, vMiddleDstHeight, alpha );
 //        }
 //    }
 //
 //    if( uiActualBottomBorder > 0)
 //    {
 //        ux_uint uiSrcYStart = uiImageHeight - eC_ToInt( vActualBottomBorder);
-//        ux_value vDstYStart = kAbsRect.GetY2()-vActualBottomBorder;
+//        ux_value vDstYStart = abs_rect.GetY2()-vActualBottomBorder;
 //        if( uiActualLeftBorder > 0)
 //        {
 //            //Bottom Left
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               0, uiSrcYStart, uiActualLeftBorder, uiActualBottomBorder,
-//                               kAbsRect.GetX1(), vDstYStart, vActualLeftBorder, vActualBottomBorder, alpha);
+//                               abs_rect.GetX1(), vDstYStart, vActualLeftBorder, vActualBottomBorder, alpha);
 //        }
 //        if( uiActualRightBorder > 0)
 //        {
 //            //Bottom Right
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiImageWidth-uiActualRightBorder, uiSrcYStart, uiActualRightBorder, uiActualBottomBorder,
-//                               kAbsRect.GetX2()-vActualRightBorder,vDstYStart, vActualRightBorder, vActualBottomBorder, alpha);
+//                               abs_rect.GetX2()-vActualRightBorder,vDstYStart, vActualRightBorder, vActualBottomBorder, alpha);
 //        }
 //        if( uiCenterSourceWidth > 0) // If source blit image width > 0
 //        {
 //            //Bottom center
-//            GETGFX.blit_img_ext( eID,
+//            GETGFX.blit_img_ext( id,
 //                               uiActualLeftBorder, uiSrcYStart, uiCenterSourceWidth, uiActualBottomBorder,
-//                               kAbsRect.GetX1()+vActualLeftBorder, vDstYStart, vCenterDstWidth, vActualBottomBorder, alpha );
+//                               abs_rect.GetX1()+vActualLeftBorder, vDstYStart, vCenterDstWidth, vActualBottomBorder, alpha );
 //        }
 //    }
 }

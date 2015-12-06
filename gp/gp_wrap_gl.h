@@ -72,13 +72,13 @@ public:
     // General functionality
     // ---------------------------------------------------------------
 
-    void create_screen(const ux_uint &uiWidth, const ux_uint &uiHeight);
+    void create_screen(const ux_uint &width, const ux_uint &height);
 
     virtual ux_uint get_virtual_screen_width();
     virtual ux_uint get_physical_screen_width();
     virtual ux_uint get_virtual_screen_height();
     virtual ux_uint get_physical_screen_height();
-    virtual void set_screen_size(const ux_uint &uiWidth, const ux_uint &uiHeight);
+    virtual void set_screen_size(const ux_uint &width, const ux_uint &height);
 
     // ---------------------------------------------------------------
     // Drawing functions
@@ -93,7 +93,7 @@ public:
     virtual void set_foreground_color_impl(const ux_ubyte &red, const ux_ubyte &green, const ux_ubyte &blue,
                                            const ux_ubyte &alpha = 255);
 
-    virtual ux_value set_line_width(const ux_value &vWidth);
+    virtual ux_value set_line_width(const ux_value &width);
 
     /** Draws a line from (vX1, vY1) to (vX2, vY2)
     @param vX1 X-Coordinate of starting point
@@ -126,10 +126,10 @@ public:
     @param vY1 Y-Coordinate of bounding rectangle's top left corner
     @param vX2 X-Coordinate of bounding rectangle's bottom right corner
     @param vY2 Y-Coordinate of bounding rectangle's bottom right corner
-    @param bFilled Specifies whether the ellipse will be drawn outlined (false) or filled (true)
+    @param filled Specifies whether the ellipse will be drawn outlined (false) or filled (true)
     */
     virtual void ellipse(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2,
-                         const ux_bool &bFilled);
+                         const ux_bool &filled);
 
     // ---------------------------------------------------------------
     // Clipping and invalidated rectangles
@@ -143,11 +143,11 @@ public:
                by the functions of the graphics wrapper. The rectangle includes the
                border. All pixels outside will be left untouched.
     */
-    virtual void set_cliprect(const geo::FloatRect &rkNewClipRect);
+    virtual void set_cliprect(const geo::float_rect &rkNewClipRect);
 
-    virtual ux_bool image_exists(const ImageResource_t eID) const
+    virtual ux_bool image_exists(const image_id id) const
     {
-//        ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eID);
+//        ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(id);
 //        return m_apTextures[uiCurImage] != NULL && (m_apTextures[uiCurImage]->GetData() != NULL || m_apTextures[uiCurImage]->get_texture_ID() != 0);
         return false;
     }
@@ -156,7 +156,7 @@ public:
     @param eImageID Image data object to be returned.
     @return Pointer to image data object.
     */
-//    ux_image_data_gl* GetImageData(const ImageResource_t &eImageID);
+//    ux_image_data_gl* GetImageData(const image_id &eImageID);
 
     /** Sets the default 2D view used by the gfx wrapper for 2D drawing operations.
         This method uses the dimensions returned by get_virtual_screen_width() and get_virtual_screen_height().
@@ -164,10 +164,10 @@ public:
     void set_2D_view();
 
     /** Sets the default 2D view used by the gfx wrapper for 2D drawing operations.
-        @param uiWidth Width of Viewport
-        @param uiHeight Height of Viewport
+        @param width Width of Viewport
+        @param height Height of Viewport
     */
-    void set_2D_view(const ux_uint uiWidth, const ux_uint uiHeight);
+    void set_2D_view(const ux_uint width, const ux_uint height);
 
     /** Checks for occurency of OpenGL Erros.
         All OpenGL errors (error code and text) since the last call of this function (or glGetError) are log in the Guiliani Log.
@@ -180,7 +180,7 @@ public:
         @param eImageID The image ID
         @return The texture ID
     */
-    const ux_uint get_texture_ID(const ImageResource_t &eImageID);
+    const ux_uint get_texture_ID(const image_id &eImageID);
 
     /**
      * Applies a perspective projection matrix to current GL_PROJECTION. Old
@@ -328,29 +328,29 @@ protected:
 //    virtual CGUIBitmapPlane* CreateGfxDependentBitmap(
 //        GUIBitmapPlaneID_t uiNewBitmapID,
 //        const CGUIObject& rkParentObject,
-//        const ux_value &vWidth, const ux_value &vHeight);
+//        const ux_value &width, const ux_value &vHeight);
 
     /** Restores the Backbuffer of the display after it has been used for texture rendering
         Always begins in LOWER LEFT of screen!
-        @param vWidth of the area to restore.
+        @param width of the area to restore.
         @param vHeight of the area to restore.
     */
-    virtual void restore_back_buffer(const ux_value vWidth, const ux_value vHeight);
+    virtual void restore_back_buffer(const ux_value width, const ux_value vHeight);
 
     /** Loads an image.
     This loads an image from the given path and associates it with an Image-Identifier.
     @param psPath Complete path and filename of the image to be loaded.
-    @param eID ID by which the image will later be accessible.
+    @param id ID by which the image will later be accessible.
     @return True if the image was successfully loaded, False otherwise
     */
-    virtual void load_img_impl(const ux_string &psPath, const ImageResource_t &eID);
+    virtual void load_img_impl(const ux_string &psPath, const image_id &id);
 
     /** Unloads an image.
     Unloads the image associated with the supplied Image-identifier and frees the memory formerly
     occupied by this image.
-    @param eID Identifier of the image to be unloaded.
+    @param id Identifier of the image to be unloaded.
     */
-    virtual void unload_img(const ImageResource_t &eID);
+    virtual void unload_img(const image_id &id);
 
     ux_bool set_nof_imagesImpl(const ux_uint uiNOFImages);
 
@@ -358,44 +358,44 @@ protected:
     // Image-access
     // ---------------------------------------------------------------
 
-    virtual void blit_img_ext_impl(const ImageResource_t &eID, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
+    virtual void blit_img_ext_impl(const image_id &id, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
                                    const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vDestX,
                                    const ux_value &vDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
                                    const ux_ubyte &alpha = 255, const ux_value &vAngle = 0,
                                    const ux_value &vRotCenterX = 0.5, const ux_value &vRotCenterY = 0.5);
 
     /** Gets the width of an image.
-    @param eID Identifier of the image.
+    @param id Identifier of the image.
     @return The width of the image in pixels.
     */
-    virtual ux_uint get_img_width_impl(const ImageResource_t &eID) const;
+    virtual ux_uint get_img_width_impl(const image_id &id) const;
 
     /** Gets the height of an image.
-    @param eID Identifier of the image.
+    @param id Identifier of the image.
     @return The height of the image in pixels.
     */
-    virtual ux_uint get_img_height_impl(const ImageResource_t &eID) const;
+    virtual ux_uint get_img_height_impl(const image_id &id) const;
 
     /** Returns the amount of memory taken up by an image.
-        @param eID ID of the image to be measured.
+        @param id ID of the image to be measured.
         @return Size of the image in byte.
       */
-    virtual ux_uint get_image_size(const ImageResource_t &eID) const;
+    virtual ux_uint get_image_size(const image_id &id) const;
 
     /** Draws a rectangle
         @param vX1 X position of corner 1
         @param vY1 Y position of corner 1
         @param vX2 X position of corner 2
         @param vY2 Y position of corner 2
-        @param bFilled Whether to draw a filled rectangle
+        @param filled Whether to draw a filled rectangle
       */
     void draw_rect(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2,
-                   const ux_bool bFilled);
+                   const ux_bool filled);
 
     /** Generates a texture of matching (power of 2) size for the given image ID and copies the image into it
     @param eImageID ImageID for which the texture should be created.
     */
-    void generate_texture(const ImageResource_t &eImageID);
+    void generate_texture(const image_id &eImageID);
 
     /** Accessing the Z-Correction for current render target.
       * Render targets may be the screen or any BitmapPlane.
@@ -414,7 +414,7 @@ protected:
                border. All pixels outside will be left untouched.
         @param bRotate Set this true to set glScissor rotated anti-clockwise.
     */
-    void set_cliprect(const geo::FloatRect &rkNewClipRect, const ux_bool &bRotate);
+    void set_cliprect(const geo::float_rect &rkNewClipRect, const ux_bool &bRotate);
 
     ux_uint m_uiScreenWidth;    ///< Screen width
     ux_uint m_uiScreenHeight;   ///< Screen height

@@ -113,7 +113,7 @@ void gp_wrap_gl::de_init()
     ux_uint ui;
     for (ui = 0; ui < m_uiNOFImages; ui++)
     {
-//        unload_img(UNMAP_IMGENTRY_TO_ARRAY((ImageResource_t)ui));
+//        unload_img(UNMAP_IMGENTRY_TO_ARRAY((image_id)ui));
     }
 }
 
@@ -122,7 +122,7 @@ void gp_wrap_gl::set_2D_view()
     set_2D_view(get_virtual_screen_width(), get_virtual_screen_height());
 }
 
-void gp_wrap_gl::set_2D_view(const ux_uint uiWidth, const ux_uint uiHeight)
+void gp_wrap_gl::set_2D_view(const ux_uint width, const ux_uint height)
 {
     // Clear projection matrix for adjusting view
     glMatrixMode(GL_PROJECTION);
@@ -130,22 +130,22 @@ void gp_wrap_gl::set_2D_view(const ux_uint uiWidth, const ux_uint uiHeight)
 
     // Set orthogonal 2D perspective,
     // this sets up also the default clipping plane of the projection
-    glOrtho(0, uiWidth, // Left, Right
-            0, uiHeight,     // Bottom, Top
+    glOrtho(0, width, // Left, Right
+            0, height,     // Bottom, Top
             1, -1);       // Near, Far
 
     // Marks the drawing region
-    glViewport(0, 0, uiWidth, uiHeight);
+    glViewport(0, 0, width, height);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-void gp_wrap_gl::create_screen(const ux_uint &uiWidth, const ux_uint &uiHeight)
+void gp_wrap_gl::create_screen(const ux_uint &width, const ux_uint &height)
 {
     // Window information is stored in OGL-Base class
     // because of the need to recalculate into the different coordinate system of Guiliani
-    m_uiScreenWidth = uiWidth;
-    m_uiScreenHeight = uiHeight;
+    m_uiScreenWidth = width;
+    m_uiScreenHeight = height;
 
     set_2D_view();
 }
@@ -191,10 +191,10 @@ void gp_wrap_gl::set_foreground_color_impl(const ux_ubyte &red, const ux_ubyte &
     CHECK_GL_ERROR
 }
 
-ux_value gp_wrap_gl::set_line_width(const ux_value &vWidth)
+ux_value gp_wrap_gl::set_line_width(const ux_value &width)
 {
-    glLineWidth(vWidth);
-    return gp_wrap_gl::set_line_width(vWidth);
+    glLineWidth(width);
+    return gp_wrap_gl::set_line_width(width);
 }
 
 void gp_wrap_gl::line(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2)
@@ -226,7 +226,7 @@ void gp_wrap_gl::line(const ux_value &vX1, const ux_value &vY1, const ux_value &
 }
 
 void gp_wrap_gl::draw_rect(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2,
-                           const ux_bool bFilled)
+                           const ux_bool filled)
 {
     // do not use texturing
 #if defined UX_USE_OGLES2
@@ -240,7 +240,7 @@ void gp_wrap_gl::draw_rect(const ux_value &vX1, const ux_value &vY1, const ux_va
     glBindBuffer(GL_ARRAY_BUFFER, get_VBO());
     glVertexPointer(2, GL_FLOAT, 0, 0);
 
-    if (bFilled)
+    if (filled)
     {
         ux_value avVertices[] = {
             vX1 + cvPixelCenterOffset, TRANS_Y_COORD(vY1 + cvPixelCenterOffset),   // Top left corner
@@ -273,7 +273,7 @@ void gp_wrap_gl::draw_rect(const ux_value &vX1, const ux_value &vY1, const ux_va
     ux_value vTempY2 = TRANS_Y_COORD(vY2+cvPixelCenterOffset);
 
     GLenum  eDrawMode = GL_TRIANGLE_FAN;
-    if(bFilled)
+    if(filled)
     {
         // Surprisingly we explicitly need to exclude the lower right column/row of the rect for line-loops but not for triangle-fans
         eDrawMode = GL_TRIANGLE_FAN;
@@ -309,7 +309,7 @@ void gp_wrap_gl::filled_rect(const ux_value &vX1, const ux_value &vY1, const ux_
 }
 
 void gp_wrap_gl::ellipse(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2,
-                         const ux_bool &bFilled)
+                         const ux_bool &filled)
 {
     // do not use texturing
 #if defined GUILIANI_USE_OGLES2
@@ -323,9 +323,9 @@ void gp_wrap_gl::ellipse(const ux_value &vX1, const ux_value &vY1, const ux_valu
     const ux_value cvTwoPi = 6.283185307179586476925286766559f;
 
     const ux_uint cuiSteps = 30; /// @todo Mapping function depending on ellipse size
-    ux_value vWidth = vX2 - vX1;
+    ux_value width = vX2 - vX1;
     ux_value vHeight = vY2 - vY1;
-    ux_value vWidthHalf = vWidth / 2;
+    ux_value vWidthHalf = width / 2;
     ux_value vHeightHalf = vHeight / 2;
     ux_value vCenterX = vX1 + vWidthHalf;
     ux_value vCenterY = TRANS_Y_COORD(vY1 + vHeightHalf);
@@ -341,7 +341,7 @@ void gp_wrap_gl::ellipse(const ux_value &vX1, const ux_value &vY1, const ux_valu
     glVertexPointer(2, GL_FLOAT, 0, 0);
     glBufferData(GL_ARRAY_BUFFER, sizeof(avVertices), avVertices, GL_DYNAMIC_DRAW);
 
-    if (bFilled)
+    if (filled)
     {
         glDrawArrays(GL_TRIANGLE_FAN, 0, cuiSteps);
     }
@@ -351,7 +351,7 @@ void gp_wrap_gl::ellipse(const ux_value &vX1, const ux_value &vY1, const ux_valu
     }
 }
 
-void gp_wrap_gl::load_img_impl(const ux_string &kPath, const ImageResource_t &eImageID)
+void gp_wrap_gl::load_img_impl(const ux_string &kPath, const image_id &eImageID)
 {
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
 //
@@ -378,7 +378,7 @@ void gp_wrap_gl::load_img_impl(const ux_string &kPath, const ImageResource_t &eI
 //    }
 }
 
-void gp_wrap_gl::unload_img(const ImageResource_t &eImageID)
+void gp_wrap_gl::unload_img(const image_id &eImageID)
 {
 //    // Get image ID
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
@@ -399,7 +399,7 @@ void gp_wrap_gl::unload_img(const ImageResource_t &eImageID)
 //    m_apTextures[uiCurImage] = NULL;
 }
 
-ux_uint gp_wrap_gl::get_img_width_impl(const ImageResource_t &eImageID) const
+ux_uint gp_wrap_gl::get_img_width_impl(const image_id &eImageID) const
 {
     //Map ImageIDs to 0-m_uiNOFImages
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
@@ -407,7 +407,7 @@ ux_uint gp_wrap_gl::get_img_width_impl(const ImageResource_t &eImageID) const
     return 0;
 }
 
-ux_uint gp_wrap_gl::get_img_height_impl(const ImageResource_t &eImageID) const
+ux_uint gp_wrap_gl::get_img_height_impl(const image_id &eImageID) const
 {
 //    //Map ImageIDs to 0-m_uiNOFImages
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
@@ -415,20 +415,20 @@ ux_uint gp_wrap_gl::get_img_height_impl(const ImageResource_t &eImageID) const
     return 0;
 }
 
-void gp_wrap_gl::blit_img_ext_impl(const ImageResource_t &eImageID, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
+void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
                                    const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vDestX,
                                    const ux_value &vDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
                                    const ux_ubyte &alpha, const ux_value &vAngle, const ux_value &vRotCenterX,
                                    const ux_value &vRotCenterY)
 {
 //    // Retrieve current cliprect
-//    geo::FloatRect kClipRect;
+//    geo::float_rect kClipRect;
 //    get_cliprect( kClipRect);
 //
 //    // Early return if blit occurs outside of the active clipping area
 //    // The blit would be clipped away anyway, but we can save the effort for setting GL-states
 //    // This will also early-return if e.g. illegal width/height values are supplied
-//    if( !geo::FloatRect( vDestX, vDestY, vDestX+vDestWidth, vDestY+vDestHeight).Overlaps( kClipRect ))
+//    if( !geo::float_rect( vDestX, vDestY, vDestX+vDestWidth, vDestY+vDestHeight).Overlaps( kClipRect ))
 //        return;
 //
 //    //Map ImageIDs to array index (starting with 0)
@@ -528,16 +528,16 @@ void gp_wrap_gl::blit_img_ext_impl(const ImageResource_t &eImageID, const ux_uin
 //    }
 }
 
-ux_uint gp_wrap_gl::get_image_size(const ImageResource_t &eID) const
+ux_uint gp_wrap_gl::get_image_size(const image_id &id) const
 {
-//    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eID);
+//    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(id);
 //    if( uiCurImage >= m_uiNOFImages)
 //    {
-//        GUILOG(GUI_TRACE_ERROR, "CGfxWrapGL::get_image_size: Illegal image ID (" + ux_string(eID) + ") supplied.\n");
+//        GUILOG(GUI_TRACE_ERROR, "CGfxWrapGL::get_image_size: Illegal image ID (" + ux_string(id) + ") supplied.\n");
 //        return 0;
 //    }
 //
-//    if( !image_exists( eID) )
+//    if( !image_exists( id) )
 //    {
 //        return 0;
 //    }
@@ -553,21 +553,21 @@ ux_uint gp_wrap_gl::get_image_size(const ImageResource_t &eID) const
     return 0;
 }
 
-void gp_wrap_gl::set_cliprect(const geo::FloatRect &rkNewClipRect)
+void gp_wrap_gl::set_cliprect(const geo::float_rect &rkNewClipRect)
 {
     set_cliprect(rkNewClipRect, false);
 }
 
-void gp_wrap_gl::set_cliprect(const geo::FloatRect &rkNewClipRect, const ux_bool &bRotate)
+void gp_wrap_gl::set_cliprect(const geo::float_rect &rkNewClipRect, const ux_bool &bRotate)
 {
     gp_wrap_gl::set_cliprect(rkNewClipRect);
-    geo::FloatRect tempRect(m_ClippingRect);
+    geo::float_rect tempRect(m_ClippingRect);
 
     if (true == bRotate)
     {
         // Rotate the the clip rect
-        geo::FloatRect kRotRect(rkNewClipRect.get_y1(), get_physical_screen_height() - rkNewClipRect.get_x2(),
-                                rkNewClipRect.get_y2(), get_physical_screen_height() - rkNewClipRect.get_x1());
+        geo::float_rect kRotRect(rkNewClipRect.get_y1(), get_physical_screen_height() - rkNewClipRect.get_x2(),
+                                 rkNewClipRect.get_y2(), get_physical_screen_height() - rkNewClipRect.get_x1());
         tempRect = kRotRect;
     }
 
@@ -640,12 +640,12 @@ ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
     return false;
 }
 
-//ux_image_data_gl* gp_wrap_gl::GetImageData(const ImageResource_t &eImageID)
+//ux_image_data_gl* gp_wrap_gl::GetImageData(const image_id &eImageID)
 //{
 //    if (eImageID != DUMMY_IMAGE)
 //    {
 //        //Map ImageIDs to array index (starting with 0)
-//        ux_uint uiCurImage =MAP_IMGID_TO_ARRAY(eImageID);//=ImageResource_t(eImageID-DUMMY_IMAGE);
+//        ux_uint uiCurImage =MAP_IMGID_TO_ARRAY(eImageID);//=image_id(eImageID-DUMMY_IMAGE);
 //        if (uiCurImage >= m_uiNOFImages || m_apTextures[uiCurImage] == NULL)
 //        {
 //            return NULL;
@@ -661,7 +661,7 @@ ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
 //    return NULL;
 //}
 
-//void gp_wrap_gl::generate_texture(const ImageResource_t &eImageID)
+//void gp_wrap_gl::generate_texture(const image_id &eImageID)
 //{
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
 //
@@ -720,9 +720,9 @@ ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
 //CGUIBitmapPlane* gp_wrap_gl::CreateGfxDependentBitmap(
 //    GUIBitmapPlaneID_t uiNewBitmapID,
 //    const CGUIObject& rkParentObject,
-//    const ux_value &vWidth, const ux_value &vHeight)
+//    const ux_value &width, const ux_value &vHeight)
 //{
-//    CGUIBitmapPlane_GL* pNewBitmapPlane = new CGUIBitmapPlane_GL(uiNewBitmapID, rkParentObject, vWidth, vHeight);
+//    CGUIBitmapPlane_GL* pNewBitmapPlane = new CGUIBitmapPlane_GL(uiNewBitmapID, rkParentObject, width, vHeight);
 //    pNewBitmapPlane->CreateRenderSurface();
 //
 //    return pNewBitmapPlane;
@@ -758,7 +758,7 @@ inline ux_uint gp_wrap_gl::get_virtual_screen_height()
     return uiScreenHeight;
 }
 
-const ux_uint gp_wrap_gl::get_texture_ID(const ImageResource_t &eImageID)
+const ux_uint gp_wrap_gl::get_texture_ID(const image_id &eImageID)
 {
 
     return 0;
@@ -853,27 +853,27 @@ void gp_wrap_gl::increase_z_correction()
     }
 }
 
-void gp_wrap_gl::set_screen_size(const ux_uint &uiWidth, const ux_uint &uiHeight)
+void gp_wrap_gl::set_screen_size(const ux_uint &width, const ux_uint &height)
 {
-    m_uiScreenWidth = uiWidth;
-    m_uiScreenHeight = uiHeight;
+    m_uiScreenWidth = width;
+    m_uiScreenHeight = height;
     set_2D_view();
 }
 
-void gp_wrap_gl::restore_back_buffer(const ux_value vWidth, const ux_value vHeight)
+void gp_wrap_gl::restore_back_buffer(const ux_value width, const ux_value vHeight)
 {
     // Make sure view frustum is set correctly
     set_2D_view();
 
     //store the real clip and invalidated rect
-//    geo::FloatRect kRealInvalidatedRect = GETGFX.get_invalidated_rect();
-//    geo::FloatRect kRealClipRect;
+//    geo::float_rect kRealInvalidatedRect = GETGFX.get_invalidated_rect();
+//    geo::float_rect kRealClipRect;
 //    GETGFX.get_cliprect(kRealClipRect);
-    geo::FloatRect kRealInvalidatedRect = get_invalidated_rect();
-    geo::FloatRect kRealClipRect;
+    geo::float_rect kRealInvalidatedRect = get_invalidated_rect();
+    geo::float_rect kRealClipRect;
     get_cliprect(kRealClipRect);
 
-    geo::FloatRect kClipRect(0.f, TRANS_Y_COORD(vHeight), vWidth, m_uiScreenHeight);
+    geo::float_rect kClipRect(0.f, TRANS_Y_COORD(vHeight), width, m_uiScreenHeight);
 
     set_invalidated_rect(kClipRect);
     set_cliprect(kClipRect);

@@ -41,7 +41,7 @@ protected:
 //    virtual CGUIBitmapPlane* CreateGfxDependentBitmap(
 //        GUIBitmapPlaneID_t uiNewBitmapID,
 //        const CGUIObject& rkParentObject,
-//        const ux_value &vWidth, const ux_value &vHeight);
+//        const ux_value &width, const ux_value &vHeight);
 
 private:
     /** Copy-constructor.

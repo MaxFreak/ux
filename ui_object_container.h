@@ -81,7 +81,7 @@ void print_to(const ui_object_container &ObjContainer, ostream &out, size_t posi
     for (auto &e : ObjContainer)
     {
 //        out << to_string(e.GetTag()) << ": ";
-        geo::IntRect r = get_rect(e);
+        geo::int_rect r = get_rect(e);
         print_to(e, out, position + 2);
     }
     out << string(position, ' ') << "</document>";

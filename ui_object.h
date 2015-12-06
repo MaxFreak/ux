@@ -27,8 +27,8 @@ using std::shared_ptr;
 using std::cout;
 
 template<typename T> void print_to(const T &X, ostream &Out, size_t Position);
-template<typename T> void draw(const T &X, ostream &Out, geo::IntRect Position);
-//template<typename T> geo::IntRect get_rect(const T &X);
+template<typename T> void draw(const T &X, ostream &Out, geo::int_rect Position);
+//template<typename T> geo::int_rect get_rect(const T &X);
 
 class ui_object
 {
@@ -67,7 +67,7 @@ public:
         return oc.m_Tag;
     }
 
-    geo::IntRect get_rect()
+    geo::int_rect get_rect()
     {
         return m_Self->internal_get_rect();
     }
@@ -82,7 +82,7 @@ public:
         x.m_Self->internal_draw(out);
     }
 
-    friend geo::IntRect get_rect(const ui_object &x)
+    friend geo::int_rect get_rect(const ui_object &x)
     {
         return x.m_Self->internal_get_rect();
     }
@@ -94,7 +94,7 @@ private:
 
         virtual void internal_print_to(ostream &, size_t) const = 0;
         virtual void internal_draw(ostream &) const = 0;
-        virtual geo::IntRect internal_get_rect() const = 0;
+        virtual geo::int_rect internal_get_rect() const = 0;
     };
 
     template<typename T>
@@ -131,14 +131,14 @@ private:
             draw(m_Data, out, m_Position);
         }
 
-        geo::IntRect internal_get_rect() const
+        geo::int_rect internal_get_rect() const
         {
             return m_Position;
         }
 
         T m_Data;
         boost::uuids::uuid m_Tag;
-        geo::IntRect m_Position;
+        geo::int_rect m_Position;
     };
 
     shared_ptr<const object_concept> m_Self;

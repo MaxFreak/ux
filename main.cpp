@@ -30,7 +30,7 @@ void print_to(const T &X, ostream &Out, size_t Position)
 }
 
 template<typename T>
-void draw(const T &X, ostream &Out, geo::IntRect Position)
+void draw(const T &X, ostream &Out, geo::int_rect Position)
 {
     Position.print_to(Out, 2);
 }
@@ -51,7 +51,7 @@ void print_to(const my_class_t&, std::ostream& out, size_t position)
     out << std::string(position, ' ') << "my_class_t";
 }
 
-void draw(const my_class_t&, std::ostream& Out, geo::IntRect Position)
+void draw(const my_class_t&, std::ostream& Out, geo::int_rect Position)
 {
 }
 

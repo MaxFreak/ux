@@ -93,7 +93,7 @@ ux_bool gp_wrap_ogl::Refresh(const refresh_type eRefreshCallType)
 
     glClear(GL_DEPTH_BUFFER_BIT);// Depth Buffer
 
-    geo::FloatRect rect = get_invalidated_rect();
+    geo::float_rect rect = get_invalidated_rect();
 
     ux_int iClipPosX = static_cast<ux_int>(std::floor(rect.get_x1()));
     ux_int iClipPosY = static_cast<ux_int>(std::floor((get_virtual_screen_height()) - rect.get_y2()));
@@ -137,15 +137,15 @@ ux_bool gp_wrap_ogl::Refresh(const refresh_type eRefreshCallType)
 //CGUIBitmapPlane* gp_wrap_ogl::CreateGfxDependentBitmap(
 //    GUIBitmapPlaneID_t uiNewBitmapID,
 //    const CGUIObject& rkParentObject,
-//    const ux_value &vWidth, const ux_value &vHeight)
+//    const ux_value &width, const ux_value &vHeight)
 //{
 //    if( m_bFBOSupported)
 //    {
-//        CGUIBitmapPlane_FBO* pNewBitmapPlane = new CGUIBitmapPlane_FBO(uiNewBitmapID, rkParentObject, vWidth, vHeight);
+//        CGUIBitmapPlane_FBO* pNewBitmapPlane = new CGUIBitmapPlane_FBO(uiNewBitmapID, rkParentObject, width, vHeight);
 //        return pNewBitmapPlane;
 //    }
 //    else
 //    {
-//        return CGfxWrapGL::CreateGfxDependentBitmap( uiNewBitmapID, rkParentObject, vWidth, vHeight);
+//        return CGfxWrapGL::CreateGfxDependentBitmap( uiNewBitmapID, rkParentObject, width, vHeight);
 //    }
 //}
