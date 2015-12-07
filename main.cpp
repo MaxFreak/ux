@@ -66,7 +66,7 @@ int main(int argc, char* args[])
 
     gp_wrap_ogl_sdl ogl_sdl(640,480,true);
     in_device_sdl input_sdl;
-    sdltest.main_loop(input_sdl);
+    sdltest.main_loop(ogl_sdl, input_sdl);
 
     ogl_sdl.de_init();
 #endif

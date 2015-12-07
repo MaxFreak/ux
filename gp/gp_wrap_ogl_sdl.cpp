@@ -118,8 +118,8 @@ ux_bool gp_wrap_ogl_sdl::refresh(const refresh_type eRefreshCallType)
 {
     if (eRefreshCallType == refresh_single || eRefreshCallType == refresh_last_frame)
     {
-        glDisable(GL_SCISSOR_TEST);
-        glClear(GL_DEPTH_BUFFER_BIT);
+//        glDisable(GL_SCISSOR_TEST);
+//        glClear(GL_DEPTH_BUFFER_BIT);
         m_vDepthCorrection = 0;
         SDL_GL_SwapBuffers();
     }

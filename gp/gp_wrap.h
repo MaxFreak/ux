@@ -122,8 +122,8 @@ public:
     */
     void update_global_alpha(const ux_ubyte &alpha)
     {
-        m_ubAlpha= apply_global_alpha(alpha);
-        m_vGlobalAlphaFactor= m_ubAlpha / 255.0f;
+        m_alpha = apply_global_alpha(alpha);
+        m_global_alpha_factor = m_alpha / 255.0f;
     }
 
 
@@ -134,8 +134,8 @@ public:
     */
     void set_global_alpha(const ux_ubyte &alpha)
     {
-        m_ubAlpha= alpha;
-        m_vGlobalAlphaFactor= m_ubAlpha / 255.0f;
+        m_alpha = alpha;
+        m_global_alpha_factor = m_alpha / 255.0f;
     }
 
     /** Sets the line width in pixels
@@ -144,9 +144,9 @@ public:
     */
     virtual ux_value set_line_width(const ux_value &width)
     {
-        ux_value vOldWidth = m_vLineWidth;
-        m_vLineWidth = width;
-        return vOldWidth;
+        ux_value old_width = m_line_width;
+        m_line_width = width;
+        return old_width;
     }
 
     /** Draws a line from (abs_x1, abs_y1) to (abs_x2, abs_y2)
@@ -320,44 +320,44 @@ public:
         Blits (draws) the image associated with the supplied Image-identifier to the specified position
         on the screen.
         @param id       Identifier of the image to be blitted.
-        @param vAbsDestX Destination x-position.
-        @param vAbsDestY Destination y-position.
+        @param abs_dest_x Destination x-position.
+        @param abs_dest_y Destination y-position.
     */
-    void blit_img(const image_id &id, const ux_value &vAbsDestX, const ux_value &vAbsDestY)
+    void blit_img(const image_id &id, const ux_value &abs_dest_x, const ux_value &abs_dest_y)
     {
-        blit_img_ext(id, 0, 0, get_img_width(id), get_img_height(id), vAbsDestX, vAbsDestY, get_img_width(id),
+        blit_img_ext(id, 0, 0, get_img_width(id), get_img_height(id), abs_dest_x, abs_dest_y, get_img_width(id),
                      get_img_height(id));
     }
 
     /** Extended blit of an image.
         Performs a stretch blit of the image associated with the supplied Image Identifier.
         The image will be blitted to the position specified by the x- and y-parameter and automatically
-        stretched to meet the desired width and height if the bStretch flag is set to true.
+        stretched to meet the desired width and height if the stretch flag is set to true.
         @param id       Identifier of the image to be blitted.
-        @param vAbsDestX Destination x-position.
-        @param vAbsDestY Destination y-position.
+        @param abs_dest_x Destination x-position.
+        @param abs_dest_y Destination y-position.
         @param width    Target width. Image will be automatically stretched if necessary.
-        @param vHeight   Target height. Image will be automatically stretched if necessary.
-        @param bStretch  Image will be stretched to meet the desired size if set to true.
+        @param height   Target height. Image will be automatically stretched if necessary.
+        @param stretch  Image will be stretched to meet the desired size if set to true.
         @param alpha   Degree of transparency. 0=transparent 255=opaque  Default is opaque.
     */
-    void blit_img_ext(const image_id &id, const ux_value &vAbsDestX, const ux_value &vAbsDestY,
-                      const ux_value &width, const ux_value &vHeight, const ux_bool &bStretch = true,
+    void blit_img_ext(const image_id &id, const ux_value &abs_dest_x, const ux_value &abs_dest_y,
+                      const ux_value &width, const ux_value &height, const ux_bool &stretch = true,
                       const ux_ubyte &alpha = 255)
     {
         if (id != DUMMY_IMAGE)
         {
-            if( bStretch)
+            if( stretch)
             {
-                blit_img_ext(id, 0, 0, get_img_width(id), get_img_height(id), vAbsDestX, vAbsDestY, width, vHeight,
+                blit_img_ext(id, 0, 0, get_img_width(id), get_img_height(id), abs_dest_x, abs_dest_y, width, height,
                              alpha);
             }
             else
             {
                 blit_img_ext(id, 0, 0, std::min(static_cast<ux_float> (get_img_width(id)), width),
-                             std::min(static_cast<ux_float> (get_img_height(id)), vHeight), vAbsDestX, vAbsDestY,
+                             std::min(static_cast<ux_float> (get_img_height(id)), height), abs_dest_x, abs_dest_y,
                              std::min(static_cast<ux_float> (get_img_width(id)), width),
-                             std::min(static_cast<ux_float> (get_img_height(id)), vHeight), alpha);
+                             std::min(static_cast<ux_float> (get_img_height(id)), height), alpha);
             }
         }
     }
@@ -399,64 +399,64 @@ public:
     /** Extended blit of an image.
         Performs a stretch blit of the image associated with the supplied Image Identifier.
         The image will be blitted to the position given by the upper left corner of the supplied rectangle.
-        It will be be stretched to meet the desired width and height if the bStretch flag is set to true.
+        It will be be stretched to meet the desired width and height if the stretch flag is set to true.
         @param id       Identifier of the image to be blitted.
         @param abs_rect  Rectangle describing the destination position and size of the image on the screen
-        @param bStretch  Image will be stretched to meet the desired size if set to true.
+        @param stretch  Image will be stretched to meet the desired size if set to true.
         @param alpha   Degree of transparency. 0=transparent 255=opaque  Default is opaque.
     */
-    inline void blit_img_ext(const image_id &id, const geo::float_rect &abs_rect, const ux_bool &bStretch = true,
+    inline void blit_img_ext(const image_id &id, const geo::float_rect &abs_rect, const ux_bool &stretch = true,
                              const ux_ubyte &alpha = 255)
     {
-        blit_img_ext(id, abs_rect.get_x1(), abs_rect.get_y1(), abs_rect.get_width(), abs_rect.get_height(), bStretch,
+        blit_img_ext(id, abs_rect.get_x1(), abs_rect.get_y1(), abs_rect.get_width(), abs_rect.get_height(), stretch,
                      alpha);
     }
 
     /** Extended blit of an image.
         Performs a stretch blit of the image associated with the supplied Image Identifier.
-        An area of the image (which is defined by kSrcAbsRect) will be blitted to the position given by the upper left
-        corner of kDstAbsRect. It will be be stretched to meet the desired width and height.
+        An area of the image (which is defined by src_abs_rect) will be blitted to the position given by the upper left
+        corner of dst_abs_rect. It will be be stretched to meet the desired width and height.
         @param id          Identifier of the image to be blitted.
-        @param kSrcAbsRect  Rectangle describing the relevant area within the source image
-        @param kDstAbsRect  Rectangle describing the destination position and size of the image on the screen
+        @param src_abs_rect  Rectangle describing the relevant area within the source image
+        @param dst_abs_rect  Rectangle describing the destination position and size of the image on the screen
         @param alpha      Degree of transparency. 0=transparent 255=opaque  Default is opaque.
     */
-    inline void blit_img_ext(const image_id &id, const geo::float_rect &kSrcAbsRect,
-                             const geo::float_rect &kDstAbsRect, const ux_ubyte &alpha = 255)
+    inline void blit_img_ext(const image_id &id, const geo::float_rect &src_abs_rect,
+                             const geo::float_rect &dst_abs_rect, const ux_ubyte &alpha = 255)
     {
-        blit_img_ext(id, kSrcAbsRect.get_x1(), kSrcAbsRect.get_y1(), kSrcAbsRect.get_width(), kSrcAbsRect.get_height(),
-                     kDstAbsRect.get_x1(), kDstAbsRect.get_y1(), kDstAbsRect.get_width(), kDstAbsRect.get_height(),
+        blit_img_ext(id, src_abs_rect.get_x1(), src_abs_rect.get_y1(), src_abs_rect.get_width(), src_abs_rect.get_height(),
+                     dst_abs_rect.get_x1(), dst_abs_rect.get_y1(), dst_abs_rect.get_width(), dst_abs_rect.get_height(),
                      alpha);
     }
 
     /** Extended blit of an image.
         Performs a rotated stretch blit of the image associated with the supplied Image Identifier.
-        An area of the image (which is defined by uiAbsSrcX, uiAbsSrcY, uiSrcWidth and uiSrcHeight) will be blitted to the
-        position given by vAbsDestX and vAbsDestY. It will be be stretched to meet vDestWidth and vDestHeight if the bStretch
+        An area of the image (which is defined by abs_src_x, abs_src_y, src_width and src_height) will be blitted to the
+        position given by abs_dest_x and abs_dest_y. It will be be stretched to meet dest_width and dest_height if the stretch
         flag is set to true.
-        Optionally the image can be rotated by vAngle degrees around a point defined by vRotCenterX and vRotCenterY.
+        Optionally the image can be rotated by angle degrees around a point defined by rot_center_x and rot_center_y.
         The center of rotation is given in coordinates within a range of 0 to 1 (similar to U/V coordinates), where (0,0) is the
         image's top left corner, (1,1) equals the lower right corner and (0.5, 0.5) corresponds to the image's center.
 
         @param id          Identifier of the image to be blitted.
-        @param uiAbsSrcX    X coordinate of upper left corner of the relevant area within the source image
-        @param uiAbsSrcY    Y coordinate of upper left corner of the relevant area within the source image
-        @param uiSrcWidth   Width of the of the relevant area within the source image
-        @param uiSrcHeight  Height of the of the relevant area within the source image
-        @param vAbsDestX    Destination X position in absolute coordinates
-        @param vAbsDestY    Destination Y position in absolute coordinates
-        @param vDestWidth   Destination width
-        @param vDestHeight  Destination height
+        @param abs_src_x    X coordinate of upper left corner of the relevant area within the source image
+        @param abs_src_y    Y coordinate of upper left corner of the relevant area within the source image
+        @param src_width   Width of the of the relevant area within the source image
+        @param src_height  Height of the of the relevant area within the source image
+        @param abs_dest_x    Destination X position in absolute coordinates
+        @param abs_dest_y    Destination Y position in absolute coordinates
+        @param dest_width   Destination width
+        @param dest_height  Destination height
         @param alpha      Degree of transparency. 0=transparent 255=opaque  Default is opaque.
-        @param vAngle       Angle in degrees by which the image will be rotated
-        @param vRotCenterX  Rotation center X. In range of 0 to 1  (like U/V coordinates)
-        @param vRotCenterY  Rotation center Y. In range of 0 to 1  (like U/V coordinates)
+        @param angle       Angle in degrees by which the image will be rotated
+        @param rot_center_x  Rotation center X. In range of 0 to 1  (like U/V coordinates)
+        @param rot_center_y  Rotation center Y. In range of 0 to 1  (like U/V coordinates)
         */
-    inline void blit_img_ext(const image_id &id, const ux_uint &uiAbsSrcX, const ux_uint &uiAbsSrcY,
-                             const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vAbsDestX,
-                             const ux_value &vAbsDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
-                             const ux_ubyte &alpha = 255, const ux_value &vAngle = 0, const ux_value &vRotCenterX = 0.5,
-                             const ux_value &vRotCenterY = 0.5)
+    inline void blit_img_ext(const image_id &id, const ux_uint &abs_src_x, const ux_uint &abs_src_y,
+                             const ux_uint &src_width, const ux_uint &src_height, const ux_value &abs_dest_x,
+                             const ux_value &abs_dest_y, const ux_value &dest_width, const ux_value &dest_height,
+                             const ux_ubyte &alpha = 255, const ux_value &angle = 0, const ux_value &rot_center_x = 0.5,
+                             const ux_value &rot_center_y = 0.5)
     {
 //        if (MAP_IMGID_TO_ARRAY(id) >= m_uiNOFImages)
 //        {
@@ -477,8 +477,8 @@ public:
             return;
         }
         //The value of alpha is multiplied by the scaling factor (in the event of, for example, widgets in a composite object)
-        blit_img_ext_impl(id, uiAbsSrcX, uiAbsSrcY, uiSrcWidth, uiSrcHeight, vAbsDestX, vAbsDestY, vDestWidth,
-                          vDestHeight, apply_global_alpha(alpha), vAngle, vRotCenterX, vRotCenterY);
+        blit_img_ext_impl(id, abs_src_x, abs_src_y, src_width, src_height, abs_dest_x, abs_dest_y, dest_width,
+                          dest_height, apply_global_alpha(alpha), angle, rot_center_x, rot_center_y);
     }
 
     /** Returns the width of an image.
@@ -556,14 +556,15 @@ public:
     /** Gets the current alpha value.
         @return The alpha value.
      */
-    inline ux_ubyte get_global_alpha() const {return m_ubAlpha;}
+    inline ux_ubyte get_global_alpha() const {return m_alpha;}
 
     /** Applies the current global alpha to the given alpha value and returns the result.
         If e.g. the global alpha is 127, and the supplied alpha is 127, the returned value will be 64.
         @param alpha The alpha value to which global alpha shall be applied.
         @return The modified alpha value.
      */
-    inline ux_ubyte apply_global_alpha(const ux_ubyte alpha) const {return static_cast<ux_ubyte>(alpha * m_vGlobalAlphaFactor);}
+    inline ux_ubyte apply_global_alpha(const ux_ubyte alpha) const {return static_cast<ux_ubyte>(alpha *
+            m_global_alpha_factor);}
 
     /** Gets the number of images (array size).
         @return Number of images.
@@ -590,24 +591,24 @@ public:
 #if defined NON_POWER_OF_2_TEXTURES
         return eC_ToInt(eC_Ceil(vValue));
 #else
-        ux_uint uiPOW = vValue;
-        --uiPOW;
-        uiPOW |= uiPOW >> 16;
-        uiPOW |= uiPOW >> 8;
-        uiPOW |= uiPOW >> 4;
-        uiPOW |= uiPOW >> 2;
-        uiPOW |= uiPOW >> 1;
-        ++uiPOW;
-        return uiPOW;
+        ux_uint pow_of = vValue;
+        --pow_of;
+        pow_of |= pow_of >> 16;
+        pow_of |= pow_of >> 8;
+        pow_of |= pow_of >> 4;
+        pow_of |= pow_of >> 2;
+        pow_of |= pow_of >> 1;
+        ++pow_of;
+        return pow_of;
 #endif
     }
 
     /** Tell Guiliani that the underlying graphics API enforces flipping the back and front buffers (Instead of copying from the back to the front buffer).
         @param bDoubleBufferingEnforcesFlipping Set to True if flipping of buffers leads to visual artifacts */
-    void set_doublebuffering_enforces_flipping(const ux_bool bDoubleBufferingEnforcesFlipping) { m_bDoubleBufferingEnforcesFlipping = bDoubleBufferingEnforcesFlipping; }
+    void set_doublebuffering_enforces_flipping(const ux_bool doublebuffering_enforces_flipping) { m_doublebuffering_enforces_flipping = doublebuffering_enforces_flipping; }
     /** Returns whether the DoubleBufferingEnforcesFlipping-flag has been set.
         @return The current status of the DoubleBufferingEnforcesFlipping-flag (as set by the user, or marked as default by the chosen graphics wrapper) */
-    ux_bool set_doublebuffering_enforces_flipping() { return m_bDoubleBufferingEnforcesFlipping; }
+    ux_bool set_doublebuffering_enforces_flipping() { return m_doublebuffering_enforces_flipping; }
 
 protected:
     /** Method to bring the screen content onto the physical screen so that it becomes
@@ -642,9 +643,9 @@ protected:
                 number of images. False otherwise.*/
     ux_bool set_nof_images(const ux_uint uiNOFImages)
     {
-//        m_kGfxWrapSemaphore.Enter();
+        m_gp_wrap_semaphore.notify();
         ux_bool bRet = set_nof_imagesImpl(uiNOFImages);
-//        m_kGfxWrapSemaphore.Leave();
+        m_gp_wrap_semaphore.wait();
         return bRet;
     }
 
@@ -666,13 +667,13 @@ protected:
     void load_img(const ux_string &kPath, const image_id &id)
     {
 //        CONTROLPOINTSTART(CGUIPerfMon::eLoadImg)
-//        m_kGfxWrapSemaphore.Enter();
+        m_gp_wrap_semaphore.notify();
         // Only load, if this ImageID is not already in use.
         if( !image_exists(id))
         {
             load_img_impl(kPath, id);
         }
-//        m_kGfxWrapSemaphore.Leave();
+           m_gp_wrap_semaphore.wait();
 //        CONTROLPOINTEND(CGUIPerfMon::eLoadImg)
     }
 
@@ -722,24 +723,24 @@ protected:
         For detailed explanations, please refer to CGfxWrap::blit_img_ext
 
         @param id          Identifier of the image to be blitted.
-        @param uiAbsSrcX    X coordinate of upper left corner of the relevant area within the source image
-        @param uiAbsSrcY    Y coordinate of upper left corner of the relevant area within the source image
-        @param uiSrcWidth   Width of the of the relevant area within the source image
-        @param uiSrcHeight  Height of the of the relevant area within the source image
-        @param vAbsDestX    Destination X position in absolute coordinates
-        @param vAbsDestY    Destination Y position in absolute coordinates
-        @param vDestWidth   Destination width
-        @param vDestHeight  Destination height
+        @param abs_src_x    X coordinate of upper left corner of the relevant area within the source image
+        @param abs_src_y    Y coordinate of upper left corner of the relevant area within the source image
+        @param src_width   Width of the of the relevant area within the source image
+        @param src_height  Height of the of the relevant area within the source image
+        @param abs_dest_x    Destination X position in absolute coordinates
+        @param abs_dest_y    Destination Y position in absolute coordinates
+        @param dest_width   Destination width
+        @param dest_height  Destination height
         @param alpha      Degree of transparency. 0=transparent 255=opaque  Default is opaque.
-        @param vAngle       Angle in degrees by which the image will be rotated
-        @param vRotCenterX  Rotation center X. In range of 0 to 1  (like U/V coordinates)
-        @param vRotCenterY  Rotation center Y. In range of 0 to 1  (like U/V coordinates)
+        @param angle       Angle in degrees by which the image will be rotated
+        @param rot_center_x  Rotation center X. In range of 0 to 1  (like U/V coordinates)
+        @param rot_center_y  Rotation center Y. In range of 0 to 1  (like U/V coordinates)
       */
-    virtual void blit_img_ext_impl(const image_id &id, const ux_uint &uiAbsSrcX, const ux_uint &uiAbsSrcY,
-                                   const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vAbsDestX,
-                                   const ux_value &vAbsDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
-                                   const ux_ubyte &alpha = 255, const ux_value &vAngle = 0,
-                                   const ux_value &vRotCenterX = 0.5, const ux_value &vRotCenterY = 0.5) = 0;
+    virtual void blit_img_ext_impl(const image_id &id, const ux_uint &abs_src_x, const ux_uint &abs_src_y,
+                                   const ux_uint &src_width, const ux_uint &src_height, const ux_value &abs_dest_x,
+                                   const ux_value &abs_dest_y, const ux_value &dest_width, const ux_value &dest_height,
+                                   const ux_ubyte &alpha = 255, const ux_value &angle = 0,
+                                   const ux_value &rot_center_x = 0.5, const ux_value &rot_center_y = 0.5) = 0;
 
 
     /** Sets the foreground color. This MUST be implemented by all graphics wrappers.
@@ -781,9 +782,9 @@ protected:
 //    eC_TListDoubleLinked <geo::float_rect> m_kLastFrameInvalidatedRectList;
 
     /** Guiliani's smart redraw mechanism requires that the back buffer gets COPIED to the front buffer and NOT FLIPPED
-        If the underlying graphics API enforces flipping, though, you can set the m_bDoubleBufferingEnforcesFlipping flag
+        If the underlying graphics API enforces flipping, though, you can set the m_doublebuffering_enforces_flipping flag
         and Guiliani will react accordingly. */
-    ux_bool m_bDoubleBufferingEnforcesFlipping;
+    ux_bool m_doublebuffering_enforces_flipping;
 
     /** This rectangle marks the region of the screen, which is currently being redrawn.
     During a redraw of the GUI, this will be assigned every rectangle within m_kInvalidetedRectList    */
@@ -794,7 +795,7 @@ protected:
     geo::float_rect m_ClippingRect;
 
     /// line width in pixels
-    ux_value m_vLineWidth;
+    ux_value m_line_width;
 
     /// total number of image-objects
     ux_uint m_uiNOFImages;
@@ -803,11 +804,11 @@ protected:
     ux_uint m_uiColor;
 
     /// Currently set global alpha value
-    ux_ubyte m_ubAlpha;
+    ux_ubyte m_alpha;
 
     /** Current scaling factor for global alpha
         Used as a helper variable when scaling concatenated alpha operations. */
-    ux_value m_vGlobalAlphaFactor;
+    ux_value m_global_alpha_factor;
     /**
         Indicates whether HandleDraw() was called in last frame.
         In this case we need a refresh if we use double buffering (to switch buffers)
@@ -816,7 +817,7 @@ protected:
     ux_bool m_bInvalidationInLastFrame;
 
     /// Semaphore to lock access to methods used in a multi thread context
-//    eC_Semaphore m_kGfxWrapSemaphore;
+    ux::semaphore m_gp_wrap_semaphore;
 
 private:
     ///Removes all invalidated areas.
@@ -841,11 +842,11 @@ private:
     ux_bool m_force_refresh;
 
     /// rect stored during bitmap rendering
-    geo::float_rect m_kRealInvalidatedRect;
-    geo::float_rect m_kRealClipRect;
+    geo::float_rect m_real_invalidated_rect;
+    geo::float_rect m_real_cliprect;
 
     /// Indicates if the GUI is currently being redrawn. While a redraw is in progress e.g. Invalidation will be disabled.
-    ux_bool m_bCurrentlyRedrawing;
+    ux_bool m_currently_redrawing;
 };
 
 

@@ -3,7 +3,8 @@
 in_device_sdl::in_device_sdl()
 {
     SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+//    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+    SDL_EnableKeyRepeat(100, 10);
     m_pAdditionalEvent = NULL;
 
     //init SDL timer subsystem
@@ -42,7 +43,7 @@ in_event *in_device_sdl::GetEvent(ux_uint uiIdleTime)
     SDL_Event CurrentSDLEvent;
     in_event *pEvent = NULL;
 
-    eC_Time64 kElapsedTime;
+    ux::eC_Time64 kElapsedTime;
     SDL_TimerID pTimerID;
     ux_int iRes = 0;
 

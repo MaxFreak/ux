@@ -328,14 +328,14 @@ protected:
 //    virtual CGUIBitmapPlane* CreateGfxDependentBitmap(
 //        GUIBitmapPlaneID_t uiNewBitmapID,
 //        const CGUIObject& rkParentObject,
-//        const ux_value &width, const ux_value &vHeight);
+//        const ux_value &width, const ux_value &height);
 
     /** Restores the Backbuffer of the display after it has been used for texture rendering
         Always begins in LOWER LEFT of screen!
         @param width of the area to restore.
-        @param vHeight of the area to restore.
+        @param height of the area to restore.
     */
-    virtual void restore_back_buffer(const ux_value width, const ux_value vHeight);
+    virtual void restore_back_buffer(const ux_value width, const ux_value height);
 
     /** Loads an image.
     This loads an image from the given path and associates it with an Image-Identifier.
@@ -359,10 +359,10 @@ protected:
     // ---------------------------------------------------------------
 
     virtual void blit_img_ext_impl(const image_id &id, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
-                                   const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vDestX,
-                                   const ux_value &vDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
-                                   const ux_ubyte &alpha = 255, const ux_value &vAngle = 0,
-                                   const ux_value &vRotCenterX = 0.5, const ux_value &vRotCenterY = 0.5);
+                                   const ux_uint &src_width, const ux_uint &src_height, const ux_value &vDestX,
+                                   const ux_value &vDestY, const ux_value &dest_width, const ux_value &dest_height,
+                                   const ux_ubyte &alpha = 255, const ux_value &angle = 0,
+                                   const ux_value &rot_center_x = 0.5, const ux_value &rot_center_y = 0.5);
 
     /** Gets the width of an image.
     @param id Identifier of the image.

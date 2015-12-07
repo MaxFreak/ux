@@ -324,9 +324,9 @@ void gp_wrap_gl::ellipse(const ux_value &vX1, const ux_value &vY1, const ux_valu
 
     const ux_uint cuiSteps = 30; /// @todo Mapping function depending on ellipse size
     ux_value width = vX2 - vX1;
-    ux_value vHeight = vY2 - vY1;
+    ux_value height = vY2 - vY1;
     ux_value vWidthHalf = width / 2;
-    ux_value vHeightHalf = vHeight / 2;
+    ux_value vHeightHalf = height / 2;
     ux_value vCenterX = vX1 + vWidthHalf;
     ux_value vCenterY = TRANS_Y_COORD(vY1 + vHeightHalf);
     ux_value vStepSize = cvTwoPi / cuiSteps;
@@ -416,10 +416,10 @@ ux_uint gp_wrap_gl::get_img_height_impl(const image_id &eImageID) const
 }
 
 void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSrcX, const ux_uint &uiSrcY,
-                                   const ux_uint &uiSrcWidth, const ux_uint &uiSrcHeight, const ux_value &vDestX,
-                                   const ux_value &vDestY, const ux_value &vDestWidth, const ux_value &vDestHeight,
-                                   const ux_ubyte &alpha, const ux_value &vAngle, const ux_value &vRotCenterX,
-                                   const ux_value &vRotCenterY)
+                                   const ux_uint &src_width, const ux_uint &src_height, const ux_value &vDestX,
+                                   const ux_value &vDestY, const ux_value &dest_width, const ux_value &dest_height,
+                                   const ux_ubyte &alpha, const ux_value &angle, const ux_value &rot_center_x,
+                                   const ux_value &rot_center_y)
 {
 //    // Retrieve current cliprect
 //    geo::float_rect kClipRect;
@@ -428,7 +428,7 @@ void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSr
 //    // Early return if blit occurs outside of the active clipping area
 //    // The blit would be clipped away anyway, but we can save the effort for setting GL-states
 //    // This will also early-return if e.g. illegal width/height values are supplied
-//    if( !geo::float_rect( vDestX, vDestY, vDestX+vDestWidth, vDestY+vDestHeight).Overlaps( kClipRect ))
+//    if( !geo::float_rect( vDestX, vDestY, vDestX+dest_width, vDestY+dest_height).Overlaps( kClipRect ))
 //        return;
 //
 //    //Map ImageIDs to array index (starting with 0)
@@ -461,7 +461,7 @@ void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSr
 //            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 //
 //            glBindTexture(GL_TEXTURE_2D, get_texture_ID(eImageID));
-//            ux_uint uiFlippedSrcY = m_apTextures[uiCurImage]->GetHeight() - (uiSrcY + uiSrcHeight);
+//            ux_uint uiFlippedSrcY = m_apTextures[uiCurImage]->GetHeight() - (uiSrcY + src_height);
 //
 //#if defined GUILIANI_USE_OGLES2
 //            // Sets the fragment texture env mode to GL_MODULATE
@@ -471,21 +471,21 @@ void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSr
 //            glTexEnvV(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); // Blend texel with color fragment
 //#endif
 //            ux_value avVertices[] = {
-//                vDestX, TRANS_Y_COORD(vDestY + vDestHeight), //0,0
+//                vDestX, TRANS_Y_COORD(vDestY + dest_height), //0,0
 //                eC_Div( eC_FromInt(uiSrcX), vTexWidth), //U
 //                eC_Div( eC_FromInt(uiFlippedSrcY), vTexHeight), //V
 //
-//                vDestX + vDestWidth, TRANS_Y_COORD(vDestY + vDestHeight), //1,0
-//                eC_Div( eC_FromInt(uiSrcX + uiSrcWidth), vTexWidth ), //U
+//                vDestX + dest_width, TRANS_Y_COORD(vDestY + dest_height), //1,0
+//                eC_Div( eC_FromInt(uiSrcX + src_width), vTexWidth ), //U
 //                eC_Div( eC_FromInt(uiFlippedSrcY), vTexHeight), //V
 //
 //                vDestX, TRANS_Y_COORD(vDestY), //0,1
 //                eC_Div( eC_FromInt(uiSrcX), vTexWidth ), //U
-//                eC_Div( eC_FromInt(uiFlippedSrcY + uiSrcHeight), vTexHeight), //V
+//                eC_Div( eC_FromInt(uiFlippedSrcY + src_height), vTexHeight), //V
 //
-//                vDestX + vDestWidth, TRANS_Y_COORD(vDestY), //1,1
-//                eC_Div( eC_FromInt(uiSrcX + uiSrcWidth), vTexWidth ), //U
-//                eC_Div( eC_FromInt(uiFlippedSrcY + uiSrcHeight), vTexHeight ) //V
+//                vDestX + dest_width, TRANS_Y_COORD(vDestY), //1,1
+//                eC_Div( eC_FromInt(uiSrcX + src_width), vTexWidth ), //U
+//                eC_Div( eC_FromInt(uiFlippedSrcY + src_height), vTexHeight ) //V
 //            };
 //
 //            // Set the buffer's data
@@ -499,23 +499,23 @@ void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSr
 //            glTexCoordPointer(2, GL_EC_VALUE, uiVertexStride, (void*) (2 * sizeof(ux_value)));
 //
 //            // If there is a rotation requested for this blit, we need to apply several transformations to the image
-//            if( vAngle != 0)
+//            if( angle != 0)
 //            {
 //                glPushMatrix();
 //                // Translate to actual screen position
 //                // Remember that matrix operations affect the result in reverse order!)
 //                // So effectively we move to the origin first, then rotate and finally move to the target position
-//                glTranslateV( vDestX + eC_Mul(vDestWidth,vRotCenterX), TRANS_Y_COORD(vDestY+eC_Mul(vDestHeight,vRotCenterY)), 0);
+//                glTranslateV( vDestX + eC_Mul(dest_width,rot_center_x), TRANS_Y_COORD(vDestY+eC_Mul(dest_height,rot_center_y)), 0);
 //                // Rotate around Z axis
-//                glRotateV( -vAngle, 0,0, eC_FromInt(1));
-//                // Move image towards opengl-origin for rotation around vRotCenterX/Y
-//                glTranslateV( -(vDestX + eC_Mul(vDestWidth,vRotCenterX)), -(TRANS_Y_COORD(vDestY+eC_Mul(vDestHeight,vRotCenterY))), 0);
+//                glRotateV( -angle, 0,0, eC_FromInt(1));
+//                // Move image towards opengl-origin for rotation around rot_center_x/Y
+//                glTranslateV( -(vDestX + eC_Mul(dest_width,rot_center_x)), -(TRANS_Y_COORD(vDestY+eC_Mul(dest_height,rot_center_y))), 0);
 //            }
 //
 //            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 //
 //            // Restore original matrix, if we applied a rotation to the current one
-//            if( vAngle != 0)
+//            if( angle != 0)
 //            {
 //                glPopMatrix();
 //            }
@@ -720,9 +720,9 @@ ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
 //CGUIBitmapPlane* gp_wrap_gl::CreateGfxDependentBitmap(
 //    GUIBitmapPlaneID_t uiNewBitmapID,
 //    const CGUIObject& rkParentObject,
-//    const ux_value &width, const ux_value &vHeight)
+//    const ux_value &width, const ux_value &height)
 //{
-//    CGUIBitmapPlane_GL* pNewBitmapPlane = new CGUIBitmapPlane_GL(uiNewBitmapID, rkParentObject, width, vHeight);
+//    CGUIBitmapPlane_GL* pNewBitmapPlane = new CGUIBitmapPlane_GL(uiNewBitmapID, rkParentObject, width, height);
 //    pNewBitmapPlane->CreateRenderSurface();
 //
 //    return pNewBitmapPlane;
@@ -860,7 +860,7 @@ void gp_wrap_gl::set_screen_size(const ux_uint &width, const ux_uint &height)
     set_2D_view();
 }
 
-void gp_wrap_gl::restore_back_buffer(const ux_value width, const ux_value vHeight)
+void gp_wrap_gl::restore_back_buffer(const ux_value width, const ux_value height)
 {
     // Make sure view frustum is set correctly
     set_2D_view();
@@ -873,7 +873,7 @@ void gp_wrap_gl::restore_back_buffer(const ux_value width, const ux_value vHeigh
     geo::float_rect kRealClipRect;
     get_cliprect(kRealClipRect);
 
-    geo::float_rect kClipRect(0.f, TRANS_Y_COORD(vHeight), width, m_uiScreenHeight);
+    geo::float_rect kClipRect(0.f, TRANS_Y_COORD(height), width, m_uiScreenHeight);
 
     set_invalidated_rect(kClipRect);
     set_cliprect(kClipRect);

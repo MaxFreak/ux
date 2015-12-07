@@ -42,107 +42,146 @@ using ux::ux_bool;
 #define UX_THROW_EXCEPTION(Exception, ErrorMessage) {std::cout << "ERROR: " << ErrorMessage << " File: " << (__FILE__) << " Line: " << (__LINE__) << "\n"; throw Exception;}
 //#define UX_THROW_EXCEPTION(Exception, ErrorMessage)
 
+#include <mutex>
+#include <condition_variable>
+
+namespace ux
+{
+
+    class semaphore
+    {
+    public:
+        semaphore(int count = 0) : m_count(count) { }
+
+        inline void notify()
+        {
+            std::unique_lock<std::mutex> lock(m_mtx);
+            m_count++;
+            m_cv.notify_one();
+        }
+
+        inline void wait()
+        {
+            std::unique_lock<std::mutex> lock(m_mtx);
+
+            while (m_count == 0)
+            {
+                m_cv.wait(lock);
+            }
+            m_count--;
+        }
+
+    private:
+        std::mutex m_mtx;
+        std::condition_variable m_cv;
+        int m_count;
+    };
 
 //---------------------------------------------------------------
 // eC_Time64 is a 64Bit unsigned integer base class
 // Only used for time profiling
 
-class eC_Time64
-{
+    class eC_Time64
+    {
 
-public:
+    public:
 
-    // default constructor
-    inline eC_Time64()                                { }
-    // copy constructor
-    inline eC_Time64(const eC_Time64& rkTime)         { Set( rkTime.m_uiHigh, rkTime.m_uiLow ); }
-    // 32bit constructor
-    inline eC_Time64(ux_uint uiLow)                   { Set(0, uiLow ); }
-    // 64bit constructor
-    inline eC_Time64(ux_uint uiHigh, ux_uint uiLow)   { Set(uiHigh, uiLow ); }
+        // default constructor
+        inline eC_Time64() { }
 
-    // comparison
-    inline bool operator== (const eC_Time64& rkTime) const;
-    inline bool operator!= (const eC_Time64& rkTime) const;
+        // copy constructor
+        inline eC_Time64(const eC_Time64 &rkTime) { Set(rkTime.m_uiHigh, rkTime.m_uiLow); }
 
-    // arithmetics
-    inline eC_Time64 operator- (const eC_Time64& rkTime) const;
-    inline eC_Time64 operator+ (const eC_Time64& rkTime) const;
+        // 32bit constructor
+        inline eC_Time64(ux_uint uiLow) { Set(0, uiLow); }
 
-    // access
-    inline void Set(ux_uint uiHigh, ux_uint uiLow);
+        // 64bit constructor
+        inline eC_Time64(ux_uint uiHigh, ux_uint uiLow) { Set(uiHigh, uiLow); }
 
-    // conversion
-    inline double toDouble() const;
+        // comparison
+        inline bool operator==(const eC_Time64 &rkTime) const;
 
-    // data
-    ux_uint m_uiHigh;
-    ux_uint m_uiLow;
-};
+        inline bool operator!=(const eC_Time64 &rkTime) const;
 
-//----------------------------------------------------------------------------
-inline void eC_Time64::Set(ux_uint uiHigh, ux_uint uiLow)
-{
-    m_uiHigh = uiHigh;
-    m_uiLow  = uiLow;
-}
+        // arithmetics
+        inline eC_Time64 operator-(const eC_Time64 &rkTime) const;
+
+        inline eC_Time64 operator+(const eC_Time64 &rkTime) const;
+
+        // access
+        inline void Set(ux_uint uiHigh, ux_uint uiLow);
+
+        // conversion
+        inline double toDouble() const;
+
+        // data
+        ux_uint m_uiHigh;
+        ux_uint m_uiLow;
+    };
 
 //----------------------------------------------------------------------------
-inline double eC_Time64::toDouble() const
-{
-    double ret;
+    inline void eC_Time64::Set(ux_uint uiHigh, ux_uint uiLow)
+    {
+        m_uiHigh = uiHigh;
+        m_uiLow = uiLow;
+    }
 
-    ret= (double)m_uiHigh;
+//----------------------------------------------------------------------------
+    inline double eC_Time64::toDouble() const
+    {
+        double ret;
+
+        ret = (double) m_uiHigh;
 //    ret= ret * (double)(65536.0) * (double)(65536.0)+ m_uiLow;
 
-    ret= ret * ((double)(0xffffffff) + 1) + m_uiLow;
+        ret = ret * ((double) (0xffffffff) + 1) + m_uiLow;
 //ret = (double)((long long)m_uiHigh << 32) + m_uiLow
-    return ret;
-}
+        return ret;
+    }
 
 //----------------------------------------------------------------------------
-inline bool eC_Time64::operator== (const eC_Time64& rkTime) const
-{
-    return (m_uiHigh == rkTime.m_uiHigh) && (m_uiLow == rkTime.m_uiLow);
-}
+    inline bool eC_Time64::operator==(const eC_Time64 &rkTime) const
+    {
+        return (m_uiHigh == rkTime.m_uiHigh) && (m_uiLow == rkTime.m_uiLow);
+    }
 
 //----------------------------------------------------------------------------
-inline bool eC_Time64::operator!= (const eC_Time64& rkTime) const
-{
-    return (m_uiHigh != rkTime.m_uiHigh) || (m_uiLow != rkTime.m_uiLow);
-}
+    inline bool eC_Time64::operator!=(const eC_Time64 &rkTime) const
+    {
+        return (m_uiHigh != rkTime.m_uiHigh) || (m_uiLow != rkTime.m_uiLow);
+    }
 
 //----------------------------------------------------------------------------
-inline eC_Time64 eC_Time64::operator- (const eC_Time64& rkTime) const
-{
-    ux_uint uiCarry=0;
-    eC_Time64 kRet;
+    inline eC_Time64 eC_Time64::operator-(const eC_Time64 &rkTime) const
+    {
+        ux_uint uiCarry = 0;
+        eC_Time64 kRet;
 
-    kRet.m_uiLow  = m_uiLow  - rkTime.m_uiLow;
+        kRet.m_uiLow = m_uiLow - rkTime.m_uiLow;
 
-    if (kRet.m_uiLow>m_uiLow)
-        uiCarry = 1;
+        if (kRet.m_uiLow > m_uiLow)
+            uiCarry = 1;
 
-    kRet.m_uiHigh = m_uiHigh - rkTime.m_uiHigh - uiCarry;
+        kRet.m_uiHigh = m_uiHigh - rkTime.m_uiHigh - uiCarry;
 
-    return kRet;
-}
+        return kRet;
+    }
 
 //----------------------------------------------------------------------------
-inline eC_Time64 eC_Time64::operator+ (const eC_Time64& rkTime) const
-{
-    ux_uint uiCarry=0;
-    eC_Time64 kRet;
+    inline eC_Time64 eC_Time64::operator+(const eC_Time64 &rkTime) const
+    {
+        ux_uint uiCarry = 0;
+        eC_Time64 kRet;
 
-    kRet.m_uiLow  = m_uiLow  + rkTime.m_uiLow;
+        kRet.m_uiLow = m_uiLow + rkTime.m_uiLow;
 
-    if (kRet.m_uiLow<m_uiLow)
-        uiCarry = 1;
+        if (kRet.m_uiLow < m_uiLow)
+            uiCarry = 1;
 
-    kRet.m_uiHigh = m_uiHigh + rkTime.m_uiHigh + uiCarry;
+        kRet.m_uiHigh = m_uiHigh + rkTime.m_uiHigh + uiCarry;
 
-    return kRet;
+        return kRet;
+    }
 }
-
 
 #endif //UX_UX_TYPES_AND_DEFS_H

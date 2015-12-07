@@ -3,9 +3,14 @@
 //
 
 #include "ux_app.h"
+
 #include "in_event.h"
 
-ux_app::ux_app()
+ux_app::ux_app() :
+    m_xpos(100),
+    m_ypos(100),
+    m_size(100),
+    m_color(0x80)
 {
 }
 
@@ -13,44 +18,17 @@ ux_app::~ux_app()
 {
 }
 
-void ux_app::draw_screen(void )
+void ux_app::draw_screen(gp_wrap &graphic_wrap )
 {
-    static GLubyte red[]    = { 255,   0,   0, 255 };
-    static GLubyte green[]  = {   0, 255,   0, 255 };
-    static GLubyte blue[]   = {   0,   0, 255, 255 };
-    static GLubyte white[]  = { 255, 255, 255, 255 };
-    static GLubyte yellow[] = {   0, 255, 255, 255 };
-    static GLubyte black[]  = {   0,   0,   0, 255 };
-    static GLubyte orange[] = { 255, 255,   0, 255 };
-    static GLubyte purple[] = { 255,   0, 255,   0 };
+    // Clear screen
+    graphic_wrap.set_foreground_color(0xff000000);
+    graphic_wrap.filled_rect(0, 0, graphic_wrap.get_physical_screen_width(), graphic_wrap.get_physical_screen_height());
 
-    /* Clear the color and depth buffers. */
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-    /* Send our triangle data to the pipeline. */
-    glBegin( GL_TRIANGLES );
-
-    static GLfloat v0[] = { 0.0f, 0.0f,  0.0f };
-    static GLfloat v1[] = {  100.0f, 0.0f,  0.0f };
-    static GLfloat v2[] = {  100.0f,  100.0f,  0.0f };
-    static GLfloat v3[] = { 0.0f,  100.0f,  0.0f };
-
-    glColor4ubv( red );
-    glVertex3fv( v0 );
-    glColor4ubv( green );
-    glVertex3fv( v1 );
-    glColor4ubv( blue );
-    glVertex3fv( v2 );
-    glColor4ubv( white );
-    glVertex3fv( v3 );
-    glColor4ubv( white );
-    glVertex3fv( v2 );
-    glColor4ubv( white );
-    glVertex3fv( v1 );
-
-    glEnd( );
-
-    SDL_GL_SwapBuffers( );
+    graphic_wrap.set_foreground_color(m_color);
+    graphic_wrap.set_foreground_color(m_color, m_color, m_color, 0xff);
+    graphic_wrap.filled_rect(m_xpos, m_ypos, m_xpos + m_size, m_ypos + m_size);
+    graphic_wrap.redraw();
+//    SDL_GL_SwapBuffers( );
 }
 
 bool ux_app::handle_event(in_device &input_device)
@@ -59,18 +37,59 @@ bool ux_app::handle_event(in_device &input_device)
     in_event_key_type_e key_id_e = in_event_key_type_e::GK_NONE;
 
     // Process incoming events.
-    in_event *ev = input_device.GetEvent(60);
+    in_event *ev = input_device.GetEvent(10);
     if (ev == nullptr)
         return false;
 
     switch (ev->GetType())
     {
         case in_event_type_e::ET_KEYDOWN:
-            key_ev = static_cast<in_event_keyboard*>(ev);
-            key_id_e = key_ev->GetKeyIdentifier();
-            if (key_id_e == in_event_key_type_e::GK_ESCAPE)
-                return true;
+        {
+            key_ev = static_cast<in_event_keyboard *>(ev);
+            in_event_key_type_e key_e = key_ev->GetKeyIdentifier();
+            ux_uint key_content = key_ev->GetKeyContent();
+            ux_uint key_modifier = key_ev->GetModifiers();
+     //       std::cout << "Key: " << key_e << " Content: " << key_content << " Modifier: " << key_modifier << "\n";
+
+            switch (key_e)
+            {
+                case in_event_key_type_e::GK_ESCAPE:
+                    return true;
+                case in_event_key_type_e::GK_MINUS:
+                    m_size--;
+                    return false;
+                case in_event_key_type_e::GK_PLUS:
+                    m_size++;
+                    return false;
+                case in_event_key_type_e::GK_LEFT:
+                    m_xpos--;
+                    return false;
+                case in_event_key_type_e::GK_RIGHT:
+                    m_xpos++;
+                    return false;
+                case in_event_key_type_e::GK_UP:
+                    m_ypos--;
+                    return false;
+                case in_event_key_type_e::GK_DOWN:
+                    m_ypos++;
+                case in_event_key_type_e::GK_NONE:
+                {
+                    switch (key_content)
+                    {
+                        case '*':
+                            m_color++;
+                            return false;
+                        case '/':
+                            m_color--;
+                            return false;
+                    }
+                    return false;
+                }
+                default:
+                    break;
+            }
             break;
+        }
         default:
             break;
     }
@@ -78,7 +97,7 @@ bool ux_app::handle_event(in_device &input_device)
     return false;
 }
 
-int ux_app::main_loop(in_device &input_device)
+int ux_app::main_loop(gp_wrap &graphic_wrap, in_device &input_device)
 {
 //    Now we want to begin our normal app process--
 //    an event loop with redrawing.
@@ -91,7 +110,7 @@ int ux_app::main_loop(in_device &input_device)
         quit = handle_event(input_device);
 
         // Draw the screen.
-        draw_screen( );
+        draw_screen(graphic_wrap);
     }
 
     return 0;

@@ -54,19 +54,19 @@ ux_uint g_uiRefreshGUICounter;
 #endif
 
 gp_wrap::gp_wrap():
-    m_bDoubleBufferingEnforcesFlipping(false),
+    m_doublebuffering_enforces_flipping(false),
     m_InvalidatedRect(),
     m_ClippingRect(),
-    m_vLineWidth(1.0f),
+    m_line_width(1.0f),
     m_uiNOFImages(0),
     m_uiColor(0),
-    m_ubAlpha(255),
-    m_vGlobalAlphaFactor(1.0f), //Since the default alpha is 255, the scaling factor has to be 1
+    m_alpha(255),
+    m_global_alpha_factor(1.0f), //Since the default alpha is 255, the scaling factor has to be 1
     m_bInvalidationInLastFrame(true),
     m_force_refresh(false),
-    m_kRealInvalidatedRect(),
-    m_kRealClipRect(),
-    m_bCurrentlyRedrawing(false)
+    m_real_invalidated_rect(),
+    m_real_cliprect(),
+    m_currently_redrawing(false)
 {
     gp_wrap::reset_invalidated_rect();
     gp_wrap::reset_cliprect();
@@ -74,7 +74,7 @@ gp_wrap::gp_wrap():
     // Initialize internal image counter with number of static images
     m_uiNOFImages = 0; //cuiNOFImageResources;
     // Creation of semaphore
-    //    m_kGfxWrapSemaphore.Create("GfxWrapSemaphore");
+    //    m_gp_wrap_semaphore.Create("GfxWrapSemaphore");
 
 #if defined _DEBUG
     g_uiRedrawGUICounter = 0;
@@ -166,6 +166,8 @@ void gp_wrap::start_handle_draw(const geo::float_rect &crkClipRect)
 
 void gp_wrap::redraw()
 {
+    refresh(refresh_single); // BLP Intermediate solution until invalidation is working again!!!!
+return;
     // Initially reset global alpha to fully opaque
     set_global_alpha(255);
 
@@ -184,7 +186,7 @@ void gp_wrap::redraw()
      This is achieved by keeping track of invalidated rects from the previous frame, and invalidating those once again
      within the current frame.
     */
-    if( m_bDoubleBufferingEnforcesFlipping)
+    if(m_doublebuffering_enforces_flipping)
     {
 //        // For intermediate storage during "merging" of this frame's and the last frame's invalidated rects
 //        eC_TListDoubleLinked <geo::float_rect> kTempInvalidatedRectList;
@@ -221,7 +223,7 @@ void gp_wrap::redraw()
 //    if (m_kInvalidatedRectList.IsEmpty() == false)
 //    {
 //        m_bInvalidationInLastFrame = true;
-//        m_bCurrentlyRedrawing = true;
+//        m_currently_redrawing = true;
 //#if defined _DEBUG
 //        g_uiRedrawGUICounter++;
 //        g_uiRedrawGUICounter %= 1000;
@@ -270,12 +272,12 @@ void gp_wrap::redraw()
 
     // Reset invalidations
     reset_invalidation();
-    m_bCurrentlyRedrawing = false;
+    m_currently_redrawing = false;
 }
 
 void gp_wrap::invalidate_rect(const geo::float_rect &invalid_rect)
 {
-//    if( !invalid_rect.IsComprehensive() || m_bCurrentlyRedrawing) return;
+//    if( !invalid_rect.IsComprehensive() || m_currently_redrawing) return;
 //    geo::float_rect kNewRect( invalid_rect);
 //
 //    // Merge this invalidated region into the list of other currently invalidated ones

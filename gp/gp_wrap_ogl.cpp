@@ -137,15 +137,15 @@ ux_bool gp_wrap_ogl::Refresh(const refresh_type eRefreshCallType)
 //CGUIBitmapPlane* gp_wrap_ogl::CreateGfxDependentBitmap(
 //    GUIBitmapPlaneID_t uiNewBitmapID,
 //    const CGUIObject& rkParentObject,
-//    const ux_value &width, const ux_value &vHeight)
+//    const ux_value &width, const ux_value &height)
 //{
 //    if( m_bFBOSupported)
 //    {
-//        CGUIBitmapPlane_FBO* pNewBitmapPlane = new CGUIBitmapPlane_FBO(uiNewBitmapID, rkParentObject, width, vHeight);
+//        CGUIBitmapPlane_FBO* pNewBitmapPlane = new CGUIBitmapPlane_FBO(uiNewBitmapID, rkParentObject, width, height);
 //        return pNewBitmapPlane;
 //    }
 //    else
 //    {
-//        return CGfxWrapGL::CreateGfxDependentBitmap( uiNewBitmapID, rkParentObject, width, vHeight);
+//        return CGfxWrapGL::CreateGfxDependentBitmap( uiNewBitmapID, rkParentObject, width, height);
 //    }
 //}
