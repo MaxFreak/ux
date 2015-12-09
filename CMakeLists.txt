@@ -66,6 +66,19 @@ find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIR})
 set(EXTRA_LIBS ${EXTRA_LIBS} ${GLUT_LIBRARIES} )
 
+#PNG_INCLUDE_DIRS, where to find png.h, etc.
+#PNG_LIBRARIES, the libraries to link against to use PNG.
+#PNG_DEFINITIONS - You should add_definitons(${PNG_DEFINITIONS}) before compiling code that includes png library files.
+#PNG_FOUND, If false, do not try to use PNG.
+#PNG_VERSION_STRING - the version of the PNG library found (since CMake 2.8.8)
+#Also defined, but not for general use are
+#
+#PNG_LIBRARY, where to find the PNG library.
+
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIR})
+set(EXTRA_LIBS ${EXTRA_LIBS} ${PNG_LIBRARY} )
+
 Find_Package ( SDL REQUIRED )
 #Find_Package ( SDL_image REQUIRED ) # if using SDL_image
 include_directories(${SDL_INCLUDE_DIR})

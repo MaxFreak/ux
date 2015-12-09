@@ -20,10 +20,18 @@ endif (USE_GL)
 
 set(GP_SOURCE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/gp_wrap.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_data.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_decoder.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_decoder_png.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_loader.cpp
         ${GL_SOURCE_FILES}
         PARENT_SCOPE)
 
 set(GP_HEADER_FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_data.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_decoder.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_decoder_png.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/gp_image_loader.h
         ${GL_HEADER_FILES}
         PARENT_SCOPE)
 

@@ -9,6 +9,14 @@
       <sourceFolder url="file://$MODULE_DIR$/geo/geo_rectangle.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gl_api_mappings.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gp/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_data.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_data.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_decoder.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_decoder.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_decoder_png.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_decoder_png.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_loader.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gp/gp_image_loader.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gp/gp_wrap.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gp/gp_wrap.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gp/gp_wrap_gl.cpp" isTestSource="false" />
@@ -25,8 +33,6 @@
       <sourceFolder url="file://$MODULE_DIR$/in/in_device_sdl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/in/in_event.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_app.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SDLMain.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SDLMain.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tools/CMakeLists.txt" isTestSource="false" />
@@ -35,6 +41,8 @@
       <sourceFolder url="file://$MODULE_DIR$/ui_history.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ui_object.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ui_object_container.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_app.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_config.h.in" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_exception.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_exception.h" isTestSource="false" />
@@ -244,6 +252,7 @@
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Frameworks/smpeg.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Frameworks/Vorbis.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Headers" />
+          <root url="file:///opt/X11/include" />
           <root url="file://$MODULE_DIR$/../boost_1_59_0" />
           <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug" />
           <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel" />
@@ -450,6 +459,7 @@
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Frameworks/smpeg.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Frameworks/Vorbis.framework/Headers" />
           <root url="file:///Library/Frameworks/SDL_mixer.framework/Headers" />
+          <root url="file:///opt/X11/include" />
           <root url="file://$MODULE_DIR$/../boost_1_59_0" />
           <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug" />
           <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel" />

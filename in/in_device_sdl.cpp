@@ -256,7 +256,7 @@ in_event *in_device_sdl::GetEvent(ux_uint uiIdleTime)
             case SDL_VIDEORESIZE:
             {
                 //GUILOG (GUI_TRACE_DEBUG, ux_string("SDL_PollEvent : Type: SDL_VIDEORESIZE: w = ")  + ux_string(CurrentSDLEvent.resize.w) + " h = " + ux_string(CurrentSDLEvent.resize.h) + "\n");
-//                GETGUI.SetWidth(eC_FromInt(CurrentSDLEvent.resize.w));
+//                GETGUI.set_width(eC_FromInt(CurrentSDLEvent.resize.w));
 //                GETGUI.SetHeight(eC_FromInt(CurrentSDLEvent.resize.h));
 //                GETGFX.set_screen_size(CurrentSDLEvent.resize.w,CurrentSDLEvent.resize.h);
 //                GETGUI.InvalidateArea();
