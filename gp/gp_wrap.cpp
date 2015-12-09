@@ -55,14 +55,14 @@ ux_uint g_uiRefreshGUICounter;
 
 gp_wrap::gp_wrap():
     m_doublebuffering_enforces_flipping(false),
-    m_InvalidatedRect(),
-    m_ClippingRect(),
+    m_invalidated_rect(),
+    m_clipping_rect(),
     m_line_width(1.0f),
-    m_uiNOFImages(0),
-    m_uiColor(0),
+    m_nof_images(0),
+    m_color(0),
     m_alpha(255),
     m_global_alpha_factor(1.0f), //Since the default alpha is 255, the scaling factor has to be 1
-    m_bInvalidationInLastFrame(true),
+    m_invalidation_in_last_frame(true),
     m_force_refresh(false),
     m_real_invalidated_rect(),
     m_real_cliprect(),
@@ -72,7 +72,7 @@ gp_wrap::gp_wrap():
     gp_wrap::reset_cliprect();
 
     // Initialize internal image counter with number of static images
-    m_uiNOFImages = 0; //cuiNOFImageResources;
+    m_nof_images = 0; //cuiNOFImageResources;
     // Creation of semaphore
     //    m_gp_wrap_semaphore.Create("GfxWrapSemaphore");
 
@@ -107,7 +107,7 @@ void gp_wrap::reset_cliprect()
 
 void gp_wrap::get_cliprect(geo::float_rect &ClipRect) const
 {
-    ClipRect = m_ClippingRect;
+    ClipRect = m_clipping_rect;
 }
 
 void gp_wrap::set_cliprect(const geo::float_rect &NewClipRect)
@@ -115,22 +115,22 @@ void gp_wrap::set_cliprect(const geo::float_rect &NewClipRect)
     // The clipping rectangle may not exceed the invalidated region of the screen. Therefore
     // we calculate the intersecting rectangle of the clipping rect with the invalidated rect.
     // Thus a GUIObject will only be drawn if it is invalidated.
-    m_ClippingRect = NewClipRect;
-    m_ClippingRect.intersects(m_InvalidatedRect);
+    m_clipping_rect = NewClipRect;
+    m_clipping_rect.intersects(m_invalidated_rect);
 
 #ifdef GUILIANI_GFXDEBUG
     GUILOG( GUI_TRACE_DEBUG, ("CGfxWrap::SetCliprect: Clp " +
-        ux_string(eC_ToInt(m_ClippingRect.GetX1())) + " " +
-        ux_string(eC_ToInt(m_ClippingRect.GetY1())) + " " +
-        ux_string(eC_ToInt(m_ClippingRect.GetX2())) + " " +
-        ux_string(eC_ToInt(m_ClippingRect.GetY2())) +
-        (m_ClippingRect.IsComprehensive() ? ux_string(" comprehensive.\n") : ux_string(" non-comprehensive.\n"))) );
+        ux_string(eC_ToInt(m_clipping_rect.GetX1())) + " " +
+        ux_string(eC_ToInt(m_clipping_rect.GetY1())) + " " +
+        ux_string(eC_ToInt(m_clipping_rect.GetX2())) + " " +
+        ux_string(eC_ToInt(m_clipping_rect.GetY2())) +
+        (m_clipping_rect.IsComprehensive() ? ux_string(" comprehensive.\n") : ux_string(" non-comprehensive.\n"))) );
 #endif
 }
 
 void gp_wrap::reset_invalidated_rect()
 {
-    m_InvalidatedRect = geo::float_rect();
+    m_invalidated_rect = geo::float_rect();
 }
 
 void gp_wrap::reset_invalidation()
@@ -142,26 +142,26 @@ void gp_wrap::reset_invalidation()
 
 void gp_wrap::set_invalidated_rect(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2)
 {
-    m_InvalidatedRect = geo::float_rect(vX1, vY1, vX2, vY2);
+    m_invalidated_rect = geo::float_rect(vX1, vY1, vX2, vY2);
 
 #ifdef GUILIANI_GFXDEBUG
     GUILOG(GUI_TRACE_DEBUG,"CGfxWrap::set_invalidated_rect"
-        ": vX1: "+ux_string(eC_ToInt(m_InvalidatedRect.GetX1())) +
-        ", vY1: "+ux_string(eC_ToInt(m_InvalidatedRect.GetY1())) +
-        ", vX2: "+ux_string(eC_ToInt(m_InvalidatedRect.GetX2())) +
-        ", vY2: "+ux_string(eC_ToInt(m_InvalidatedRect.GetY2())) + ".\n");
+        ": vX1: "+ux_string(eC_ToInt(m_invalidated_rect.GetX1())) +
+        ", vY1: "+ux_string(eC_ToInt(m_invalidated_rect.GetY1())) +
+        ", vX2: "+ux_string(eC_ToInt(m_invalidated_rect.GetX2())) +
+        ", vY2: "+ux_string(eC_ToInt(m_invalidated_rect.GetY2())) + ".\n");
 #endif
 }
 
-ux_bool gp_wrap::set_nof_imagesImpl(const ux_uint uiNOFImages){
+ux_bool gp_wrap::set_nof_imagesImpl(const ux_uint nof_images){
 //    GUILOG( GUI_TRACE_WARNING,"CGfxWrap::set_nof_imagesImpl: Total number of images is fix for this GfxWrapper. Dynamic images are not supported\n");
-//    GUILOG( GUI_TRACE_WARNING," Request for a total of "+ux_string(uiNOFImages)+" images has been ignored. \n");
+//    GUILOG( GUI_TRACE_WARNING," Request for a total of "+ux_string(nof_images)+" images has been ignored. \n");
     return false;
 }
 
-void gp_wrap::start_handle_draw(const geo::float_rect &crkClipRect)
+void gp_wrap::start_handle_draw(const geo::float_rect &cliprect)
 {
-//    GETGUI.HandleDraw(crkClipRect);
+//    GETGUI.HandleDraw(cliprect);
 }
 
 void gp_wrap::redraw()
@@ -206,7 +206,7 @@ return;
     start_redraw();
 
     // Do not call redraw if there's nothing to be redrawn
-//    if (m_kInvalidatedRectList.IsEmpty() && m_bInvalidationInLastFrame == false)
+//    if (m_kInvalidatedRectList.IsEmpty() && m_invalidation_in_last_frame == false)
 //    {
 //        // Notify that we're done so that number of start_redraw() and end_redraw() calls is equal
 //        end_redraw();
@@ -214,15 +214,15 @@ return;
 //        return;
 //    }
 
-    // Reset m_bInvalidationInLastFrame flag
-    m_bInvalidationInLastFrame = false;
+    // Reset m_invalidation_in_last_frame flag
+    m_invalidation_in_last_frame = false;
 
     refresh_type eRefreshCallType = refresh_single;
 
     // Only redraw if there are any regions marked as "invalidated"
 //    if (m_kInvalidatedRectList.IsEmpty() == false)
 //    {
-//        m_bInvalidationInLastFrame = true;
+//        m_invalidation_in_last_frame = true;
 //        m_currently_redrawing = true;
 //#if defined _DEBUG
 //        g_uiRedrawGUICounter++;
@@ -251,7 +251,7 @@ return;
 //                set_invalidated_rect( *sIter);
 //                clear_invalid_rect();
 //                // Commence redraw.
-//                start_handle_draw( m_InvalidatedRect );
+//                start_handle_draw( m_invalidated_rect );
 //
 //                // Blit refreshed part onto the screen
 //                if (sIter == m_kInvalidatedRectList.GetEndSafe())

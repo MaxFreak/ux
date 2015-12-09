@@ -301,7 +301,7 @@ public:
     /// Returns the current invalidated rectangle
     inline const geo::float_rect &get_invalidated_rect() const
     {
-        return m_InvalidatedRect;
+        return m_invalidated_rect;
     }
 
     /** Called for each invalidated rectangle right before CGUI::HandleDraw()
@@ -458,7 +458,7 @@ public:
                              const ux_ubyte &alpha = 255, const ux_value &angle = 0, const ux_value &rot_center_x = 0.5,
                              const ux_value &rot_center_y = 0.5)
     {
-//        if (MAP_IMGID_TO_ARRAY(id) >= m_uiNOFImages)
+//        if (MAP_IMGID_TO_ARRAY(id) >= m_nof_images)
 //        {
 //            GUILOG(GUI_TRACE_ERROR, "CGfxWrap::blit_img_ext: Illegal image ID (" + ux_string(id) + ") supplied.\n");
 //            return;
@@ -489,7 +489,7 @@ public:
     */
     inline ux_uint get_img_width(const image_id &id) const
     {
-//        if (MAP_IMGID_TO_ARRAY(id) >= m_uiNOFImages)
+//        if (MAP_IMGID_TO_ARRAY(id) >= m_nof_images)
 //        {
 //            GUILOG(GUI_TRACE_ERROR, "CGfxWrap::get_img_width: Illegal image ID (" + ux_string(id) + ") supplied.\n");
 //            return 0;
@@ -520,7 +520,7 @@ public:
     */
     inline ux_uint get_img_height(const image_id &id) const
     {
-//        if (MAP_IMGID_TO_ARRAY(id) >= m_uiNOFImages)
+//        if (MAP_IMGID_TO_ARRAY(id) >= m_nof_images)
 //        {
 //            GUILOG(GUI_TRACE_ERROR, "CGfxWrap::get_img_height: Illegal image ID (" + ux_string(id) + ") supplied.\n");
 //            return 0;
@@ -551,7 +551,7 @@ public:
     /** Gets the current foreground color.
         @return The foreground color.
      */
-    inline ux_uint get_foreground_color() const {return m_uiColor;}
+    inline ux_uint get_foreground_color() const {return m_color;}
 
     /** Gets the current alpha value.
         @return The alpha value.
@@ -569,7 +569,7 @@ public:
     /** Gets the number of images (array size).
         @return Number of images.
     */
-    inline virtual ux_uint get_nof_images() {return m_uiNOFImages;}
+    inline virtual ux_uint get_nof_images() {return m_nof_images;}
 
     /** Returns whether the image with the given ID currently is loaded within the Graphics Wrapper.
         This interface must be implemented by derived graphics wrappers.
@@ -616,13 +616,13 @@ protected:
         @param eRefreshCallType The call type of this refresh
         @return True of the refresh was performed, False otherwise
     */
-    virtual ux_bool refresh(const refresh_type eRefreshCallType) = 0;
+    virtual ux_bool refresh(const refresh_type refresh_calltype) = 0;
 
     /** Called for every single InvalidatedRect() during redraw().
         Also serves as proxy function to make GETGUI.HandleDraw() accessible from derived graphics wrappers.
         Make sure to call CGfxWrap::start_handle_draw() when overriding this function.
         @param crkClipRect Rectangle against which this cycle of handle draw calls will be clipped. */
-    virtual void start_handle_draw(const geo::float_rect &crkClipRect);
+    virtual void start_handle_draw(const geo::float_rect &cliprect);
 
     /** Callback which is called at the beginning of redraw()
         Note that this function as well as end_redraw() will also get called if the list of invalidated rects is empty.
@@ -641,10 +641,10 @@ protected:
         @param uiNOFImages The number of images
         @return True if internal storage has been successfully adapted to support the requested
                 number of images. False otherwise.*/
-    ux_bool set_nof_images(const ux_uint uiNOFImages)
+    ux_bool set_nof_images(const ux_uint nof_images)
     {
         m_gp_wrap_semaphore.notify();
-        ux_bool bRet = set_nof_imagesImpl(uiNOFImages);
+        ux_bool bRet = set_nof_imagesImpl(nof_images);
         m_gp_wrap_semaphore.wait();
         return bRet;
     }
@@ -656,7 +656,7 @@ protected:
         @param uiNOFImages The number of images
         @return True if internal storage has been successfully adapted to support the requested
                 number of images. False otherwise.*/
-    virtual ux_bool set_nof_imagesImpl(const ux_uint uiNOFImages);
+    virtual ux_bool set_nof_imagesImpl(const ux_uint nof_images);
 
     /** Loads an image.
         This loads an image from the given path and associates it with an Image-Identifier.
@@ -664,14 +664,14 @@ protected:
         @param kPath Complete path and filename of the image to be loaded.
         @param id ID by which the image will later be accessible.
     */
-    void load_img(const ux_string &kPath, const image_id &id)
+    void load_img(const ux_string &path, const image_id &id)
     {
 //        CONTROLPOINTSTART(CGUIPerfMon::eLoadImg)
         m_gp_wrap_semaphore.notify();
         // Only load, if this ImageID is not already in use.
         if( !image_exists(id))
         {
-            load_img_impl(kPath, id);
+            load_img_impl(path, id);
         }
            m_gp_wrap_semaphore.wait();
 //        CONTROLPOINTEND(CGUIPerfMon::eLoadImg)
@@ -682,7 +682,7 @@ protected:
         @param kPath Complete path and filename of the image to be loaded.
         @param id ID by which the image will later be accessible.
     */
-    virtual void load_img_impl(const ux_string &kPath, const image_id &id) = 0;
+    virtual void load_img_impl(const ux_string &path, const image_id &id) = 0;
 
     /** Unloads an image.
         Unloads the image associated with the supplied Image-identifier and frees the memory formerly
@@ -767,9 +767,9 @@ protected:
         during the next call to refresh()
         @param NewAbsRect Structure of type CGUIRect, specifying the new invalidated rectangle's extends.
     */
-    void set_invalidated_rect(const geo::float_rect &NewAbsRect)
+    void set_invalidated_rect(const geo::float_rect &new_abs_rect)
     {
-        set_invalidated_rect(NewAbsRect.get_x1(), NewAbsRect.get_y1(), NewAbsRect.get_x2(), NewAbsRect.get_y2());
+        set_invalidated_rect(new_abs_rect.get_x1(), new_abs_rect.get_y1(), new_abs_rect.get_x2(), new_abs_rect.get_y2());
     }
 
     /// Resets the invalidated rectangle.
@@ -788,20 +788,20 @@ protected:
 
     /** This rectangle marks the region of the screen, which is currently being redrawn.
     During a redraw of the GUI, this will be assigned every rectangle within m_kInvalidetedRectList    */
-    geo::float_rect m_InvalidatedRect;
+    geo::float_rect m_invalidated_rect;
 
     /** The current clipping rect. Note that this will usually have to be set within the
     used graphics library as well. */
-    geo::float_rect m_ClippingRect;
+    geo::float_rect m_clipping_rect;
 
     /// line width in pixels
     ux_value m_line_width;
 
     /// total number of image-objects
-    ux_uint m_uiNOFImages;
+    ux_uint m_nof_images;
 
     /// Currently set foreground color
-    ux_uint m_uiColor;
+    ux_uint m_color;
 
     /// Currently set global alpha value
     ux_ubyte m_alpha;
@@ -814,7 +814,7 @@ protected:
         In this case we need a refresh if we use double buffering (to switch buffers)
         even if there were no changes in this frame.
     */
-    ux_bool m_bInvalidationInLastFrame;
+    ux_bool m_invalidation_in_last_frame;
 
     /// Semaphore to lock access to methods used in a multi thread context
     ux::semaphore m_gp_wrap_semaphore;
@@ -827,14 +827,14 @@ private:
         Dummy declaration with no implementation, just to hide the function.
         @param kSource Source object to be copied.
     */
-    gp_wrap(const gp_wrap& kSource);
+    gp_wrap(const gp_wrap& source);
 
     /** Operator= method. Should not be used.
         Dummy declaration with no implementation, just to hide the function.
         @param kSource Source object to be copied.
         @return This instance.
     */
-    gp_wrap& operator=(const gp_wrap& kSource);
+    gp_wrap& operator=(const gp_wrap& source);
 
     /** Whether a refresh should be forced when the next frame is drawn.
         @see force_refresh()

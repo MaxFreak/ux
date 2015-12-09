@@ -92,8 +92,8 @@ ux_bool gp_wrap_gl::init()
 
     try
     {
-        m_apTextures.resize(m_uiNOFImages);
-        for (ux_uint i = 0; i < m_uiNOFImages; i++)
+        m_apTextures.resize(m_nof_images);
+        for (ux_uint i = 0; i < m_nof_images; i++)
         {
             m_apTextures[i] = NULL;
         }
@@ -111,7 +111,7 @@ void gp_wrap_gl::de_init()
 {
     // Delete all existing textures
     ux_uint ui;
-    for (ui = 0; ui < m_uiNOFImages; ui++)
+    for (ui = 0; ui < m_nof_images; ui++)
     {
 //        unload_img(UNMAP_IMGENTRY_TO_ARRAY((image_id)ui));
     }
@@ -187,7 +187,7 @@ void gp_wrap_gl::set_foreground_color_impl(const ux_ubyte &red, const ux_ubyte &
 
     glColor4f(m_vRed, m_vGreen, m_vBlue, m_vAlpha);
 
-    m_uiColor = UINT_FROM_ARGB(alpha, red, green, blue);
+    m_color = UINT_FROM_ARGB(alpha, red, green, blue);
     CHECK_GL_ERROR
 }
 
@@ -384,7 +384,7 @@ void gp_wrap_gl::unload_img(const image_id &eImageID)
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
 //
 //    // return if there is no matching image for the given image ID
-//    if (uiCurImage >= m_uiNOFImages || m_apTextures[uiCurImage] == NULL)
+//    if (uiCurImage >= m_nof_images || m_apTextures[uiCurImage] == NULL)
 //        return;
 //
 //    // Delete existing image
@@ -401,7 +401,7 @@ void gp_wrap_gl::unload_img(const image_id &eImageID)
 
 ux_uint gp_wrap_gl::get_img_width_impl(const image_id &eImageID) const
 {
-    //Map ImageIDs to 0-m_uiNOFImages
+    //Map ImageIDs to 0-m_nof_images
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
 //    return m_apTextures[uiCurImage]->GetWidth();
     return 0;
@@ -409,7 +409,7 @@ ux_uint gp_wrap_gl::get_img_width_impl(const image_id &eImageID) const
 
 ux_uint gp_wrap_gl::get_img_height_impl(const image_id &eImageID) const
 {
-//    //Map ImageIDs to 0-m_uiNOFImages
+//    //Map ImageIDs to 0-m_nof_images
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(eImageID);
 //    return m_apTextures[uiCurImage]->GetHeight();
     return 0;
@@ -531,7 +531,7 @@ void gp_wrap_gl::blit_img_ext_impl(const image_id &eImageID, const ux_uint &uiSr
 ux_uint gp_wrap_gl::get_image_size(const image_id &id) const
 {
 //    ux_uint uiCurImage = MAP_IMGID_TO_ARRAY(id);
-//    if( uiCurImage >= m_uiNOFImages)
+//    if( uiCurImage >= m_nof_images)
 //    {
 //        GUILOG(GUI_TRACE_ERROR, "CGfxWrapGL::get_image_size: Illegal image ID (" + ux_string(id) + ") supplied.\n");
 //        return 0;
@@ -561,7 +561,7 @@ void gp_wrap_gl::set_cliprect(const geo::float_rect &rkNewClipRect)
 void gp_wrap_gl::set_cliprect(const geo::float_rect &rkNewClipRect, const ux_bool &bRotate)
 {
     gp_wrap_gl::set_cliprect(rkNewClipRect);
-    geo::float_rect tempRect(m_ClippingRect);
+    geo::float_rect tempRect(m_clipping_rect);
 
     if (true == bRotate)
     {
@@ -619,10 +619,10 @@ ux_bool gp_wrap_gl::check_GL_error(const ux_string &kCallingMethod)
 
 ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
 {
-    if (uiNOFImages > m_uiNOFImages)
+    if (uiNOFImages > m_nof_images)
     {
-        ux_uint uiNOFNewImages = uiNOFImages - m_uiNOFImages;
-        m_uiNOFImages = uiNOFImages;
+        ux_uint uiNOFNewImages = uiNOFImages - m_nof_images;
+        m_nof_images = uiNOFImages;
 
         // Resize internal array of images
         // ATTENTION: Resizing the Array only works with simple data types
@@ -646,7 +646,7 @@ ux_bool gp_wrap_gl::set_nof_imagesImpl(const ux_uint uiNOFImages)
 //    {
 //        //Map ImageIDs to array index (starting with 0)
 //        ux_uint uiCurImage =MAP_IMGID_TO_ARRAY(eImageID);//=image_id(eImageID-DUMMY_IMAGE);
-//        if (uiCurImage >= m_uiNOFImages || m_apTextures[uiCurImage] == NULL)
+//        if (uiCurImage >= m_nof_images || m_apTextures[uiCurImage] == NULL)
 //        {
 //            return NULL;
 //        }
