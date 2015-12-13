@@ -60,7 +60,6 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories ("geo")
 include_directories ("gp")
 include_directories ("in")
-include_directories ("tools")
 
 include_directories ("GSL")
 
@@ -99,7 +98,6 @@ Find_Package ( SDL REQUIRED )
 #Find_Package ( SDL_image REQUIRED ) # if using SDL_image
 include_directories(${SDL_INCLUDE_DIR})
 set(SOURCE_FILES ${SOURCE_FILES} SDLmain )
-#set(HEADER_FILES ${HEADER_FILES} glfw.h)
 set(EXTRA_LIBS ${EXTRA_LIBS} ${SDL_LIBRARY} )
 
 set(SOURCE_FILES
@@ -125,14 +123,6 @@ set(HEADER_FILES
         )
 
 #SOURCE_GROUP("Some Files" FILES ${HEADER_FILES})
-
-if(glfw_used)
-    add_subdirectory(glfw-3.1.2)
-    include_directories(glfw-3.1.2/include)
-    set(SOURCE_FILES ${SOURCE_FILES} glfw.cpp )
-    set(HEADER_FILES ${HEADER_FILES} glfw.h)
-    set(EXTRA_LIBS ${EXTRA_LIBS} ${GLFW_LIBRARIES} glfw)
-endif (glfw_used)
 
 if(sdl2_used) # not complete
     add_subdirectory(SDL2-2.0.3)
@@ -171,7 +161,6 @@ add_executable(ux
 
 # add the executable
 target_link_libraries (ux ${EXTRA_LIBS} )
-#target_link_libraries(myapp glfw ${GLFW_LIBRARIES})
 #link_libraries (${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} # if using SDL_image, obviously SDLmain # Sadly not included in SDL_LIBRARY variable)
 
 # ------------------------- Begin Generic CMake Variable Logging ------------------

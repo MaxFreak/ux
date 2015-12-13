@@ -14,6 +14,7 @@ const ux_string fonts_dir = "fonts";
 const ux_string sounds_dir = "sounds";
 const ux_string other_dir = "other";
 
+const ux_resource empty_resource("", resource_type::empty);
 
 ux_resources::ux_resources()
 {
@@ -45,10 +46,10 @@ void ux_resources::remove_resource(ux_string file_path)
 
 const ux_resource &ux_resources::get_resource(ux_uint resource_id)
 {
-    if (resource_id >= 0 && resource_id < m_resources.size())
+    if (resource_id < m_resources.size())
         return m_resources[resource_id];
 
-    return ux_resource("", resource_type::empty);
+    return empty_resource;
 }
 } // namespace ux
 
