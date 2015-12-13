@@ -12,7 +12,6 @@
 
 #include "ux_config.h"
 
-//#include "glfw.h"
 #include "SDL/SDL.h"
 
 //
