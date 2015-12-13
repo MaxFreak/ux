@@ -12,15 +12,22 @@
 #include "gp_wrap.h"
 #include "in_device.h"
 
+namespace ux
+{
+
 class ux_app
 {
 public:
     ux_app();
-    virtual ~ux_app();
-    bool handle_event(in_device &input_device);
-    void draw_screen( gp_wrap &graphic_wrap );
 
-    int main_loop(gp_wrap &graphic_wrap, in_device &input_device);
+    virtual ~ux_app();
+
+    bool handle_event(in_device &input_device);
+
+    void draw_screen(gp::gp_wrap &graphic_wrap);
+
+    int main_loop(gp::gp_wrap &graphic_wrap, in_device &input_device);
+
 private:
     ux_value m_xpos;
     ux_value m_ypos;
@@ -28,5 +35,6 @@ private:
     ux_ubyte m_color;
 };
 
+} // namespace ux
 
 #endif //UX_SDL_TEST_H

@@ -58,7 +58,13 @@ private:
     ux_uint m_uiTextureHeight;
 };
 
-class gp_wrap_gl: public gp_wrap
+namespace ux
+{
+namespace gp
+{
+
+
+class gp_wrap_gl : public gp_wrap
 {
 
 public:
@@ -75,9 +81,13 @@ public:
     void create_screen(const ux_uint &width, const ux_uint &height);
 
     virtual ux_uint get_virtual_screen_width();
+
     virtual ux_uint get_physical_screen_width();
+
     virtual ux_uint get_virtual_screen_height();
+
     virtual ux_uint get_physical_screen_height();
+
     virtual void set_screen_size(const ux_uint &width, const ux_uint &height);
 
     // ---------------------------------------------------------------
@@ -220,28 +230,28 @@ public:
     /** Returns the currently used vertex buffer object.
         @return Vertex buffer object.
     */
-    inline ux_uint get_VBO() const {return m_uiVBO;}
+    inline ux_uint get_VBO() const { return m_uiVBO; }
 
     /** Returns the currently used UV vertex buffer object.
         @return UV vertex buffer object.
     */
-    inline ux_uint get_UVVBO() const {return m_uiUVVBO;}
+    inline ux_uint get_UVVBO() const { return m_uiUVVBO; }
 
 #if defined GUILIANI_USE_OGL
-    #if !defined SYSTEM_NAME_DARWIN
-        /** Function pointers for Vertex Buffer Objects. */
-        static PFNGLBINDBUFFERPROC              glBindBuffer_ux;
-        static PFNGLBUFFERDATAPROC              glBufferData_ux;
-        static PFNGLGENBUFFERSPROC              glGenBuffers_ux;
-        static PFNGLDELETEBUFFERSPROC           glDeleteBuffers_ux;
+#if !defined SYSTEM_NAME_DARWIN
+    /** Function pointers for Vertex Buffer Objects. */
+    static PFNGLBINDBUFFERPROC              glBindBuffer_ux;
+    static PFNGLBUFFERDATAPROC              glBufferData_ux;
+    static PFNGLGENBUFFERSPROC              glGenBuffers_ux;
+    static PFNGLDELETEBUFFERSPROC           glDeleteBuffers_ux;
 
-        /** Function pointers for Frame Buffer Objects. */
-        static PFNGLGENFRAMEBUFFERSPROC         glGenFramebuffers_ux;
-        static PFNGLBINDFRAMEBUFFERPROC         glBindFramebuffer_ux;
-        static PFNGLFRAMEBUFFERTEXTURE2DPROC    glFramebufferTexture2D_ux;
-        static PFNGLCHECKFRAMEBUFFERSTATUSPROC  glCheckFramebufferStatus_ux;
-        static PFNGLDELETEFRAMEBUFFERSPROC      glDeleteFramebuffers_ux;
-    #endif
+    /** Function pointers for Frame Buffer Objects. */
+    static PFNGLGENFRAMEBUFFERSPROC         glGenFramebuffers_ux;
+    static PFNGLBINDFRAMEBUFFERPROC         glBindFramebuffer_ux;
+    static PFNGLFRAMEBUFFERTEXTURE2DPROC    glFramebufferTexture2D_ux;
+    static PFNGLCHECKFRAMEBUFFERSTATUSPROC  glCheckFramebufferStatus_ux;
+    static PFNGLDELETEFRAMEBUFFERSPROC      glDeleteFramebuffers_ux;
+#endif
 #endif
 
 #if defined GUILIANI_USE_OGLES2
@@ -484,5 +494,7 @@ protected:
     void de_init(void);
 };
 
+} // namespace gp
+} // namespace ux
 
 #endif //UX_GP_WRAP_GL_H

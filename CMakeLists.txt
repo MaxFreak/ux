@@ -25,13 +25,13 @@ set(PACKAGE_URL "http://www.ux_package.com/") # empty leaves it undefined
 set(VERSION "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
 set(HEX_VERSION "0x0${BUILD_MAJOR}0${BUILD_MINOR}0${BUILD_MICRO}")
 
-option (USE_SDL "Use SDL" OFF)
+option (USE_SDL "Use SDL" ON)
 MESSAGE( STATUS "Use SDL:         " ${USE_SDL} )
 
-option (USE_IN "Use input wrapper" OFF)
+option (USE_IN "Use input wrapper" ON)
 MESSAGE( STATUS "USE_IN:         " ${USE_IN} )
 
-option (USE_GL "Use OpenGL" OFF)
+option (USE_GL "Use OpenGL" ON)
 MESSAGE( STATUS "USE_GL:         " ${USE_GL} )
 
 if (USE_SDL)
@@ -51,6 +51,8 @@ include_directories ("geo")
 include_directories ("gp")
 include_directories ("in")
 include_directories ("tools")
+
+include_directories ("GSL")
 
 find_package(Boost REQUIRED)
 if(Boost_FOUND)
@@ -133,7 +135,6 @@ include_directories("${PROJECT_BINARY_DIR}")
 add_subdirectory(geo)
 add_subdirectory(gp)
 add_subdirectory(in)
-add_subdirectory(tools)
 
 add_executable(ux
         ${SOURCE_FILES}

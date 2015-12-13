@@ -22,6 +22,11 @@ PFNGLDELETEFRAMEBUFFERSPROC             gp_wrap_gl::glDeleteFramebuffers_ux = NU
 #endif
 #endif
 
+namespace ux
+{
+namespace gp
+{
+
 // Helper macro for coordinate conversion to OpenGL
 // For Y conversion, we need to flip the Y value
 // (because the origin in OpenGL is in the bottom left corner, i.e. in the first quadrant,
@@ -187,7 +192,7 @@ void gp_wrap_gl::set_foreground_color_impl(const ux_ubyte &red, const ux_ubyte &
 
     glColor4f(m_vRed, m_vGreen, m_vBlue, m_vAlpha);
 
-    m_color = UINT_FROM_ARGB(alpha, red, green, blue);
+    m_color = from_argb(alpha, red, green, blue);
     CHECK_GL_ERROR
 }
 
@@ -1258,7 +1263,8 @@ void gp_wrap_gl::PopMatrix()
 }
 #endif // #if defined GUILIANI_USE_OGLES2
 
-// ---------------- CGUIImageDataGL --------------------------
+} // namespace gp
+} // namespace ux
 
 ux_image_data_gl::ux_image_data_gl() :/*
     CGUIImageData(),*/

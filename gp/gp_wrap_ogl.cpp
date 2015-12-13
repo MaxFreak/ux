@@ -8,6 +8,11 @@
 #include "ux_types_and_defs.h"
 #include "ux_exception.h"
 
+namespace ux
+{
+namespace gp
+{
+
 gp_wrap_ogl::gp_wrap_ogl() : gp_wrap_gl(),
                                  m_bFBOSupported(false)
 {
@@ -149,3 +154,7 @@ ux_bool gp_wrap_ogl::Refresh(const refresh_type eRefreshCallType)
 //        return CGfxWrapGL::CreateGfxDependentBitmap( uiNewBitmapID, rkParentObject, width, height);
 //    }
 //}
+
+
+} // namespace gp
+} // namespace ux

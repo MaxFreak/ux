@@ -11,6 +11,11 @@
 #include "gp_wrap_ogl.h"
 #include "ux_types_and_defs.h"
 
+namespace ux
+{
+namespace gp
+{
+
 class gp_wrap_ogl_sdl : public gp_wrap_ogl
 {
 public:
@@ -34,5 +39,6 @@ private:
     ux_bool m_bResizable;
 };
 
-
+} // namespace gp
+} // namespace ux
 #endif //UX_GP_WRAP_OGL_SDL_H

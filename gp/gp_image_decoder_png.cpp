@@ -46,18 +46,18 @@ std::unique_ptr<gp_image_data> gp_image_decoder_png::get_decoded_image(ux_string
     ux_int color_type;
     std::unique_ptr<gp_image_data> image_data (new gp_image_data);
 
-    std::ifstream ifs ("test.txt", std::ifstream::binary);
+    std::ifstream is (image_name, std::ifstream::binary);
 
-    char c = ifs.get();
+//    char c = ifs.get();
+//
+//    while (ifs.good()) {
+//        std::cout << c;
+//        c = ifs.get();
+//    }
+//
+//    ifs.close();
 
-    while (ifs.good()) {
-        std::cout << c;
-        c = ifs.get();
-    }
-
-    ifs.close();
-
-    std::ifstream is ("test.txt", std::ifstream::binary);
+//    std::ifstream is ("test.txt", std::ifstream::binary);
     if (is)
     {
         // get length of file:
@@ -491,7 +491,7 @@ std::unique_ptr<gp_image_data> gp_image_decoder_png::get_decoded_image(ux_string
     image_data->set_image_data(ubImageData);
 
     is.close();
-    return nullptr;
+    return image_data;
 }
 
 std::unique_ptr<gp_image_data> gp_image_decoder_png::decode_image(const gp_image_data& image_to_decode)

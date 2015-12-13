@@ -8,14 +8,19 @@
 #include "geo_rectangle.h"
 #include "ux_types_and_defs.h"
 
-enum image_id {DUMMY_IMAGE};
+namespace ux
+{
+namespace gp
+{
 
-ux_uint UINT_FROM_RGB(const ux_ubyte & R, const ux_ubyte & G, const ux_ubyte & B);
-ux_uint UINT_FROM_ARGB(const ux_ubyte & A, const ux_ubyte & R, const ux_ubyte & G, const ux_ubyte & B);
-ux_ubyte GET_A_VAL32(const ux_uint & argb);
-ux_ubyte GET_R_VAL32(const ux_uint & argb);
-ux_ubyte GET_G_VAL32(const ux_uint & argb);
-ux_ubyte GET_B_VAL32(const ux_uint & argb);
+enum image_id { DUMMY_IMAGE };
+
+ux_uint from_rgb(const ux_ubyte &r, const ux_ubyte &g, const ux_ubyte &b);
+ux_uint from_argb(const ux_ubyte &a, const ux_ubyte &r, const ux_ubyte &g, const ux_ubyte &b);
+ux_ubyte get_a_from_argb(const ux_uint &argb);
+ux_ubyte get_r_from_argb(const ux_uint &argb);
+ux_ubyte get_g_from_argb(const ux_uint &argb);
+ux_ubyte get_b_from_argb(const ux_uint &argb);
 
 class gp_wrap
 {
@@ -31,9 +36,11 @@ public:
     };
 
     gp_wrap();
+
     virtual ~gp_wrap();
 
     virtual ux_bool init();
+
     virtual void de_init();
 
     inline void force_refresh() { m_force_refresh = true; }
@@ -41,7 +48,7 @@ public:
     /** Allocates storage for a virtual screen in which the graphics operations will draw.
         @param width Width of virtual screen.
         @param height Height of virtual screen. */
-    virtual void create_screen(const ux_uint &width, const ux_uint &height) {}
+    virtual void create_screen(const ux_uint &width, const ux_uint &height) { }
 
     /** Returns the screen width in pixels, may vary if draw_to_bitmap is active.
         It will then return the active bitmap plane's width instead.
@@ -77,12 +84,12 @@ public:
     /** Returns the vertical pixel size in pixel per inch.
         @returns vertical PPI
     */
-    virtual ux_uint get_display_vertical_PPI() const {return (72);}          // 72 as default
+    virtual ux_uint get_display_vertical_PPI() const { return (72); }          // 72 as default
 
     /** Returns the horizontal pixel size in pixel per inch.
         @returns horizontal PPI
     */
-    virtual ux_uint get_display_horizontal_PPI() const {return (72);}        // 72 as default
+    virtual ux_uint get_display_horizontal_PPI() const { return (72); }        // 72 as default
 
     // ---------------------------------------------------------------
     // Drawing functions
@@ -109,8 +116,8 @@ public:
     void set_foreground_color(const ux_uint &color)
     {
         // The value of alpha is multiplied by the scaling factor (in the event of widgets with text, the text's alpha has to be scaled)
-        set_foreground_color_impl(GET_R_VAL32(color), GET_G_VAL32(color), GET_B_VAL32(color),
-                                  apply_global_alpha(GET_A_VAL32(color)));
+        set_foreground_color_impl(get_r_from_argb(color), get_g_from_argb(color), get_b_from_argb(color),
+                                  apply_global_alpha(get_a_from_argb(color)));
     }
 
     /** Updates the global alpha via an unsigned Byte
@@ -155,7 +162,8 @@ public:
         @param abs_x2 X-coordinate of ending point
         @param abs_y2 Y-Coordinate of ending point
     */
-    virtual void line(const ux_value &abs_x1, const ux_value &abs_y1, const ux_value &abs_x2, const ux_value &abs_y2) = 0;
+    virtual void line(const ux_value &abs_x1, const ux_value &abs_y1, const ux_value &abs_x2,
+                      const ux_value &abs_y2) = 0;
 
     /** Draws a line defined by a CGUIRect
         @param abs_rect CGUIRect containing the line endpoints
@@ -177,7 +185,8 @@ public:
         @param abs_x2 X-coordinate of bottom right corner
         @param abs_y2 Y-Coordinate of bottom right corner
     */
-    virtual void rect(const ux_value &abs_x1, const ux_value &abs_y1, const ux_value &abs_x2, const ux_value &abs_y2) = 0;
+    virtual void rect(const ux_value &abs_x1, const ux_value &abs_y1, const ux_value &abs_x2,
+                      const ux_value &abs_y2) = 0;
 
     /** Draws a rectangle defined by a CGUIRect
         @param abs_rect CGUIRect containing the rectangle corners' endpoints
@@ -311,7 +320,7 @@ public:
       will only affect the current invalidated rectangle, this method should
       also restrict its operations to that region of the screen.
   */
-    virtual void clear_invalid_rect() {}
+    virtual void clear_invalid_rect() { }
 
     // ---------------------------------------------------------------
     // Image-access
@@ -341,13 +350,12 @@ public:
         @param stretch  Image will be stretched to meet the desired size if set to true.
         @param alpha   Degree of transparency. 0=transparent 255=opaque  Default is opaque.
     */
-    void blit_img_ext(const image_id &id, const ux_value &abs_dest_x, const ux_value &abs_dest_y,
-                      const ux_value &width, const ux_value &height, const ux_bool &stretch = true,
-                      const ux_ubyte &alpha = 255)
+    void blit_img_ext(const image_id &id, const ux_value &abs_dest_x, const ux_value &abs_dest_y, const ux_value &width,
+                      const ux_value &height, const ux_bool &stretch = true, const ux_ubyte &alpha = 255)
     {
         if (id != DUMMY_IMAGE)
         {
-            if( stretch)
+            if (stretch)
             {
                 blit_img_ext(id, 0, 0, get_img_width(id), get_img_height(id), abs_dest_x, abs_dest_y, width, height,
                              alpha);
@@ -424,9 +432,9 @@ public:
     inline void blit_img_ext(const image_id &id, const geo::float_rect &src_abs_rect,
                              const geo::float_rect &dst_abs_rect, const ux_ubyte &alpha = 255)
     {
-        blit_img_ext(id, src_abs_rect.get_x1(), src_abs_rect.get_y1(), src_abs_rect.get_width(), src_abs_rect.get_height(),
-                     dst_abs_rect.get_x1(), dst_abs_rect.get_y1(), dst_abs_rect.get_width(), dst_abs_rect.get_height(),
-                     alpha);
+        blit_img_ext(id, src_abs_rect.get_x1(), src_abs_rect.get_y1(), src_abs_rect.get_width(),
+                     src_abs_rect.get_height(), dst_abs_rect.get_x1(), dst_abs_rect.get_y1(), dst_abs_rect.get_width(),
+                     dst_abs_rect.get_height(), alpha);
     }
 
     /** Extended blit of an image.
@@ -472,7 +480,7 @@ public:
 
 //        CGUIImageCache::NotifyImageAccess(id);
 
-        if( !image_exists(id) )
+        if (!image_exists(id))
         {
             return;
         }
@@ -503,7 +511,7 @@ public:
 
 //        CGUIImageCache::NotifyImageAccess(id);
 
-        if( !image_exists(id) )
+        if (!image_exists(id))
         {
             return 0;
         }
@@ -534,7 +542,7 @@ public:
 
 //        CGUIImageCache::NotifyImageAccess(id);
 
-        if( !image_exists(id) )
+        if (!image_exists(id))
         {
             return 0;
         }
@@ -551,25 +559,27 @@ public:
     /** Gets the current foreground color.
         @return The foreground color.
      */
-    inline ux_uint get_foreground_color() const {return m_color;}
+    inline ux_uint get_foreground_color() const { return m_color; }
 
     /** Gets the current alpha value.
         @return The alpha value.
      */
-    inline ux_ubyte get_global_alpha() const {return m_alpha;}
+    inline ux_ubyte get_global_alpha() const { return m_alpha; }
 
     /** Applies the current global alpha to the given alpha value and returns the result.
         If e.g. the global alpha is 127, and the supplied alpha is 127, the returned value will be 64.
         @param alpha The alpha value to which global alpha shall be applied.
         @return The modified alpha value.
      */
-    inline ux_ubyte apply_global_alpha(const ux_ubyte alpha) const {return static_cast<ux_ubyte>(alpha *
-            m_global_alpha_factor);}
+    inline ux_ubyte apply_global_alpha(const ux_ubyte alpha) const
+    {
+        return static_cast<ux_ubyte>(alpha * m_global_alpha_factor);
+    }
 
     /** Gets the number of images (array size).
         @return Number of images.
     */
-    inline virtual ux_uint get_nof_images() {return m_nof_images;}
+    inline virtual ux_uint get_nof_images() { return m_nof_images; }
 
     /** Returns whether the image with the given ID currently is loaded within the Graphics Wrapper.
         This interface must be implemented by derived graphics wrappers.
@@ -605,7 +615,9 @@ public:
 
     /** Tell Guiliani that the underlying graphics API enforces flipping the back and front buffers (Instead of copying from the back to the front buffer).
         @param bDoubleBufferingEnforcesFlipping Set to True if flipping of buffers leads to visual artifacts */
-    void set_doublebuffering_enforces_flipping(const ux_bool doublebuffering_enforces_flipping) { m_doublebuffering_enforces_flipping = doublebuffering_enforces_flipping; }
+    void set_doublebuffering_enforces_flipping(
+        const ux_bool doublebuffering_enforces_flipping) { m_doublebuffering_enforces_flipping = doublebuffering_enforces_flipping; }
+
     /** Returns whether the DoubleBufferingEnforcesFlipping-flag has been set.
         @return The current status of the DoubleBufferingEnforcesFlipping-flag (as set by the user, or marked as default by the chosen graphics wrapper) */
     ux_bool set_doublebuffering_enforces_flipping() { return m_doublebuffering_enforces_flipping; }
@@ -627,13 +639,13 @@ protected:
     /** Callback which is called at the beginning of redraw()
         Note that this function as well as end_redraw() will also get called if the list of invalidated rects is empty.
         Check m_kInvalidatedRectList if you need more details on the number and dimensions of invalidated areas. */
-    virtual void start_redraw() {}
+    virtual void start_redraw() { }
 
     /// Callback which is called at the end of redraw() after all Invalidated areas were drawn and refreshed
-    virtual void end_redraw() {}
+    virtual void end_redraw() { }
 
     /// Method to clean and release the screen which was created via the create_screen Method
-    virtual void destroy_screen() {}
+    virtual void destroy_screen() { }
 
     /** Sets the total number of images. This is called internally by the ResourceManager when dynamically
         allocated image resources require the total number of images to be raised. This calls the set_nof_imagesImpl()
@@ -669,11 +681,11 @@ protected:
 //        CONTROLPOINTSTART(CGUIPerfMon::eLoadImg)
         m_gp_wrap_semaphore.notify();
         // Only load, if this ImageID is not already in use.
-        if( !image_exists(id))
+        if (!image_exists(id))
         {
             load_img_impl(path, id);
         }
-           m_gp_wrap_semaphore.wait();
+        m_gp_wrap_semaphore.wait();
 //        CONTROLPOINTEND(CGUIPerfMon::eLoadImg)
     }
 
@@ -689,7 +701,7 @@ protected:
         occupied by this image.
         @param id Identifier of the image to be unloaded.
     */
-    virtual void unload_img(const image_id &id) {}
+    virtual void unload_img(const image_id &id) { }
 
     /** Computes the size of a loaded image's raw pixel data (e.g. RGBA or RGB565, depending on platform)
         in memory. Needed for the Image Cache.
@@ -769,7 +781,8 @@ protected:
     */
     void set_invalidated_rect(const geo::float_rect &new_abs_rect)
     {
-        set_invalidated_rect(new_abs_rect.get_x1(), new_abs_rect.get_y1(), new_abs_rect.get_x2(), new_abs_rect.get_y2());
+        set_invalidated_rect(new_abs_rect.get_x1(), new_abs_rect.get_y1(), new_abs_rect.get_x2(),
+                             new_abs_rect.get_y2());
     }
 
     /// Resets the invalidated rectangle.
@@ -827,14 +840,14 @@ private:
         Dummy declaration with no implementation, just to hide the function.
         @param kSource Source object to be copied.
     */
-    gp_wrap(const gp_wrap& source);
+    gp_wrap(const gp_wrap &source);
 
     /** Operator= method. Should not be used.
         Dummy declaration with no implementation, just to hide the function.
         @param kSource Source object to be copied.
         @return This instance.
     */
-    gp_wrap& operator=(const gp_wrap& source);
+    gp_wrap &operator=(const gp_wrap &source);
 
     /** Whether a refresh should be forced when the next frame is drawn.
         @see force_refresh()
@@ -849,5 +862,7 @@ private:
     ux_bool m_currently_redrawing;
 };
 
+} // namespace gp
+} // namespace ux
 
 #endif //UX_GP_WRAP_H

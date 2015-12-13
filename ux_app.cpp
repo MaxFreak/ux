@@ -6,6 +6,9 @@
 
 #include "in_event.h"
 
+using namespace ux;
+using namespace ux::gp;
+
 ux_app::ux_app() :
     m_xpos(100),
     m_ypos(100),

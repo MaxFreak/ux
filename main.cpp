@@ -1,8 +1,11 @@
+#include <gp/gp_image_decoder_png.h>
 #include "ui_object.h"
 #include "ui_object_container.h"
 #include "ui_history.h"
 #include "gp_wrap_ogl_sdl.h"
-#include "tools.h"
+#include "gp_image_decoder.h"
+#include "gp_image_loader.h"
+
 #include "ux_config.h"
 
 //#include "glfw.h"
@@ -61,20 +64,28 @@ int main(int argc, char* args[])
 #ifdef USE_SDL
 #ifdef USE_GL
 
-    ux_app sdltest;
-//    sdltest.main_test();
+    using namespace ux;
+    using namespace ux::gp;
 
+    ux_app app;
+//    app.main_test();
+
+    gp_image_decoder_png img_dec_png;
+    gp_image_loader img_loader;
     gp_wrap_ogl_sdl ogl_sdl(640,480,true);
     in_device_sdl input_sdl;
-    sdltest.main_loop(ogl_sdl, input_sdl);
+
+    img_loader.add_decoder(img_dec_png);
+
+    app.main_loop(ogl_sdl, input_sdl);
+
+    std::unique_ptr<gp_image_data> img = img_loader.load_image("/Users/bl/Downloads/Sortiert/Develop/Bildschirmfoto 2014-10-05 um 17.02.59.png");
+
 
     ogl_sdl.de_init();
 #endif
 #endif
 //    glfw_main();
-
-    tools a;
-    a.GetTest();
 
     cout << "Hello, World!\n" ;
 

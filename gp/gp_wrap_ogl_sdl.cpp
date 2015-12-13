@@ -4,6 +4,11 @@
 
 #include "gp_wrap_ogl_sdl.h"
 
+namespace ux
+{
+namespace gp
+{
+
 gp_wrap_ogl_sdl::gp_wrap_ogl_sdl(ux_uint uiScreenWidth, ux_uint uiScreenHeight, ux_bool bResizable) :
     gp_wrap_ogl(),
     m_bResizable(bResizable)
@@ -126,4 +131,5 @@ ux_bool gp_wrap_ogl_sdl::refresh(const refresh_type eRefreshCallType)
     return true;
 }
 
-
+} // namespace gp
+} // namespace ux

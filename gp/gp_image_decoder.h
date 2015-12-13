@@ -11,7 +11,7 @@
 class gp_image_decoder
 {
 public:
-    gp_image_decoder();
+    gp_image_decoder() {};
     virtual ~gp_image_decoder() {};
     virtual ux_string get_image_decoder_name() = 0;
     virtual ux_string get_image_decoder_extension() = 0;

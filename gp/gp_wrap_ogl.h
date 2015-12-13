@@ -7,6 +7,11 @@
 
 #include "gp_wrap_gl.h"
 
+namespace ux
+{
+namespace gp
+{
+
 class gp_wrap_ogl : public gp_wrap_gl
 {
 public:
@@ -55,5 +60,7 @@ private:
     gp_wrap_ogl &operator=(const gp_wrap_ogl &kSource);
 };
 
+} // namepsace gp
+} // namespace ux
 
 #endif //UX_GP_WRAP_OGL_H

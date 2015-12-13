@@ -4,47 +4,6 @@
 
 #include "gp_wrap.h"
 
-// Return an unsigned int value from RGB (Red, Green, Blue) color value. R, G and B are expected to be bytes.
-ux_uint UINT_FROM_RGB(const ux_ubyte & R, const ux_ubyte & G, const ux_ubyte & B)
-{
-    return
-        (static_cast<ux_uint>(B)) |
-            ((static_cast<ux_uint>(G))<<8) |
-            ((static_cast<ux_uint>(R))<<16);
-}
-
-// Return an unsigned int value from ARGB (Alpha, Red, Green, Blue) color value. A, R, G and B are expected to be bytes.
-ux_uint UINT_FROM_ARGB(const ux_ubyte & A, const ux_ubyte & R, const ux_ubyte & G, const ux_ubyte & B)
-{
-    return
-        (static_cast<ux_uint>(B)) |
-            ((static_cast<ux_uint>(G))<<8) |
-            ((static_cast<ux_uint>(R))<<16) |
-            ((static_cast<ux_uint>(A))<<24);
-}
-
-/// Return the alpha portion of the parameter.
-ux_ubyte GET_A_VAL32(const ux_uint & argb)
-{
-    return static_cast<ux_ubyte>((argb >> 24) & 0xFF);
-}
-/// Return the red portion of the parameter.
-ux_ubyte GET_R_VAL32(const ux_uint & argb)
-{
-    return static_cast<ux_ubyte>((argb >> 16) & 0xFF);
-}
-
-/// Return the green portion of the parameter.
-ux_ubyte GET_G_VAL32(const ux_uint & argb)
-{
-    return static_cast<ux_ubyte>((argb >> 8) & 0xFF);
-}
-
-/// Returns the blue portion of the parameter.
-ux_ubyte GET_B_VAL32(const ux_uint & argb)
-{
-    return static_cast<ux_ubyte>(argb & 0xFF);
-}
 
 // Better ? #ifdef !defined(NDEBUG)
 #if defined _DEBUG
@@ -52,6 +11,53 @@ ux_ubyte GET_B_VAL32(const ux_uint & argb)
 ux_uint g_uiRedrawGUICounter;
 ux_uint g_uiRefreshGUICounter;
 #endif
+
+namespace ux
+{
+namespace gp
+{
+
+// Return an unsigned int value from RGB (Red, Green, Blue) color value. R, G and B are expected to be bytes.
+ux_uint from_rgb(const ux_ubyte &r, const ux_ubyte &g, const ux_ubyte &b)
+{
+    return
+        (static_cast<ux_uint>(b)) |
+            ((static_cast<ux_uint>(g))<<8) |
+            ((static_cast<ux_uint>(r))<<16);
+}
+
+// Return an unsigned int value from ARGB (Alpha, Red, Green, Blue) color value. A, R, G and B are expected to be bytes.
+ux_uint from_argb(const ux_ubyte &a, const ux_ubyte &r, const ux_ubyte &g, const ux_ubyte &b)
+{
+    return
+        (static_cast<ux_uint>(b)) |
+            ((static_cast<ux_uint>(g))<<8) |
+            ((static_cast<ux_uint>(r))<<16) |
+            ((static_cast<ux_uint>(a))<<24);
+}
+
+/// Return the alpha portion of the parameter.
+ux_ubyte get_a_from_argb(const ux_uint & argb)
+{
+    return static_cast<ux_ubyte>((argb >> 24) & 0xFF);
+}
+/// Return the red portion of the parameter.
+ux_ubyte get_r_from_argb(const ux_uint & argb)
+{
+    return static_cast<ux_ubyte>((argb >> 16) & 0xFF);
+}
+
+/// Return the green portion of the parameter.
+ux_ubyte get_g_from_argb(const ux_uint & argb)
+{
+    return static_cast<ux_ubyte>((argb >> 8) & 0xFF);
+}
+
+/// Returns the blue portion of the parameter.
+ux_ubyte get_b_from_argb(const ux_uint & argb)
+{
+    return static_cast<ux_ubyte>(argb & 0xFF);
+}
 
 gp_wrap::gp_wrap():
     m_doublebuffering_enforces_flipping(false),
@@ -68,13 +74,11 @@ gp_wrap::gp_wrap():
     m_real_cliprect(),
     m_currently_redrawing(false)
 {
-    gp_wrap::reset_invalidated_rect();
-    gp_wrap::reset_cliprect();
+    reset_invalidated_rect();
+    reset_cliprect();
 
     // Initialize internal image counter with number of static images
     m_nof_images = 0; //cuiNOFImageResources;
-    // Creation of semaphore
-    //    m_gp_wrap_semaphore.Create("GfxWrapSemaphore");
 
 #if defined _DEBUG
     g_uiRedrawGUICounter = 0;
@@ -138,7 +142,6 @@ void gp_wrap::reset_invalidation()
 //    m_kInvalidatedRectList.RemoveAll();
     reset_invalidated_rect();
 }
-
 
 void gp_wrap::set_invalidated_rect(const ux_value &vX1, const ux_value &vY1, const ux_value &vX2, const ux_value &vY2)
 {
@@ -224,10 +227,10 @@ return;
 //    {
 //        m_invalidation_in_last_frame = true;
 //        m_currently_redrawing = true;
-//#if defined _DEBUG
-//        g_uiRedrawGUICounter++;
-//        g_uiRedrawGUICounter %= 1000;
-//#endif
+#if defined _DEBUG
+        g_uiRedrawGUICounter++;
+        g_uiRedrawGUICounter %= 1000;
+#endif
 //
 //        if (m_kInvalidatedRectList.GetQuantity() == 1)
 //        {
@@ -450,3 +453,6 @@ void gp_wrap::blit_img_nine_patch(const image_id &id, const geo::float_rect &abs
 //        }
 //    }
 }
+
+} // namespace gp
+} // namespace ux
