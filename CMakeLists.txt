@@ -1,4 +1,5 @@
 # -D BOOST_ROOT=/Users/bl/ClionProjects/boost_1_59_0/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+#-D BOOST_ROOT=/Users/bl/ClionProjects/boost_1_59_0/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON VERBOSE=1
 
 cmake_minimum_required(VERSION 3.3)
 project(ux)
@@ -24,6 +25,15 @@ set(PACKAGE_BUGREPORT "bl@ux_package.com")
 set(PACKAGE_URL "http://www.ux_package.com/") # empty leaves it undefined
 set(VERSION "${BUILD_MAJOR}.${BUILD_MINOR}.${BUILD_MICRO}")
 set(HEX_VERSION "0x0${BUILD_MAJOR}0${BUILD_MINOR}0${BUILD_MICRO}")
+
+SET(BOOST_ROOT_PATH "${PROJECT_SOURCE_DIR}/../boost_1_59_0" CACHE PATH "BOOST_ROOT")
+SET(BOOST_ROOT "${BOOST_ROOT_PATH}")
+
+option (CMAKE_EXPORT_COMPILE_COMMANDS "CMAKE_EXPORT_COMPILE_COMMANDS" ON)
+MESSAGE( STATUS "UCMAKE_EXPORT_COMPILE_COMMANDS:         " ${CMAKE_EXPORT_COMPILE_COMMANDS} )
+
+option (VERBOSE "VERBOSE" ON)
+MESSAGE( STATUS "VERBOSE:         " ${VERBOSE} )
 
 option (USE_SDL "Use SDL" ON)
 MESSAGE( STATUS "Use SDL:         " ${USE_SDL} )
@@ -54,7 +64,11 @@ include_directories ("tools")
 
 include_directories ("GSL")
 
-find_package(Boost REQUIRED)
+set(Boost_USE_STATIC_LIBS        ON) # only find static libs
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
+#   find_package(Boost 1.36.0 COMPONENTS date_time filesystem system ...)
+find_package(Boost REQUIRED filesystem system)
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     set (EXTRA_LIBS ${EXTRA_LIBS} ${Boost_LIBRARIES})
@@ -93,7 +107,9 @@ set(SOURCE_FILES
         ux_app.cpp
         SDLMain.m
         ux_exception.cpp
-        ux_exception.h)
+        ux_resource.cpp
+        ux_resources.cpp
+        )
 
 set(HEADER_FILES
         ui_history.h
@@ -103,8 +119,10 @@ set(HEADER_FILES
         ux_app.h
         gl_api_mappings.h
         ux_types_and_defs.h
-        ux_exception.cpp
-        ux_exception.h)
+        ux_exception.h
+        ux_resource.h
+        ux_resources.h
+        )
 
 #SOURCE_GROUP("Some Files" FILES ${HEADER_FILES})
 

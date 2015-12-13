@@ -18,7 +18,7 @@ namespace ux
 class ux_app
 {
 public:
-    ux_app();
+    ux_app(int argc, char* args[]);
 
     virtual ~ux_app();
 
@@ -29,6 +29,8 @@ public:
     int main_loop(gp::gp_wrap &graphic_wrap, in_device &input_device);
 
 private:
+    ux_string m_exe_file_path;
+    ux_string m_exe_path;
     ux_value m_xpos;
     ux_value m_ypos;
     ux_value m_size;

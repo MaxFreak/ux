@@ -1,3 +1,7 @@
+#include <iostream>
+#include <boost/filesystem.hpp>
+
+
 #include <gp/gp_image_decoder_png.h>
 #include "ui_object.h"
 #include "ui_object_container.h"
@@ -61,13 +65,54 @@ void draw(const my_class_t&, std::ostream& Out, geo::int_rect Position)
 
 int main(int argc, char* args[])
 {
+    ux_string path_to_exe = args[0];
+
+    using std::cout;
+    using namespace boost::filesystem;
+
+    ux_string exe_file_path = args[0];
+    ux_string exe_path = initial_path().generic_string();
+
+    path cur_path = current_path();
+    ux_string cws = cur_path.generic_string();
+
+    cout << "Current working directory: " << cws << "\n\n";
+        path p ("../..");
+
+        try
+        {
+            if (exists(p))
+            {
+                if (is_regular_file(p))
+                    cout << p << " size is " << file_size(p) << '\n';
+
+                else if (is_directory(p))
+                {
+                    cout << p << " is a directory containing:\n";
+
+                    for (directory_entry& x : directory_iterator(p))
+                        cout << "    " << x.path() << " " <<is_directory(x) << '\n';
+                }
+                else
+                    cout << p << " exists, but is not a regular file or directory\n";
+            }
+            else
+                cout << p << " does not exist\n";
+        }
+
+        catch (const filesystem_error& ex)
+        {
+            cout << ex.what() << '\n';
+        }
+
+
 #ifdef USE_SDL
 #ifdef USE_GL
 
     using namespace ux;
     using namespace ux::gp;
 
-    ux_app app;
+    ux_app app(argc, args);
 //    app.main_test();
 
     gp_image_decoder_png img_dec_png;
