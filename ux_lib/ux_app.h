@@ -27,6 +27,7 @@ public:
 
     void draw_screen(gp::gp_wrap &graphic_wrap);
 
+    bool inner_loop(gp::gp_wrap &graphic_wrap, in_device &input_device);
     int main_loop(gp::gp_wrap &graphic_wrap, in_device &input_device);
 
 private:

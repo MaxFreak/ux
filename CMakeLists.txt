@@ -124,9 +124,9 @@ add_subdirectory(ux_lib)
 add_subdirectory(ux_tests)
 
 
-set(MY_SOURCE_FILES main.cpp ux_lib/SDLMain.m)
-add_executable(ux_run ${MY_SOURCE_FILES})
-target_link_libraries(ux_run ux_lib ${EXTRA_LIBS})
+set(MY_SOURCE_FILES main.cpp SDLMain.m)
+add_executable(run_ux ${MY_SOURCE_FILES})
+target_link_libraries(run_ux ux_lib ${EXTRA_LIBS})
 
 message(STATUS "---------------UX-------------------")
 get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)

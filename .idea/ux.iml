@@ -14,8 +14,12 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/cmake/internal_utils.cmake" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_tests/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/ux_check.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/basic_check.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/ux_resources_check.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SDLMain.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SDLMain.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/in/in_event.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/in/in_device_sdl.h" isTestSource="false" />
@@ -24,16 +28,14 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/in/in_device_null.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/in/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/in/in_device.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_lib/SDLMain.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ui_history.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_app.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_lib/SDLMain.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_exception.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_resource.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ui_history.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_types_and_defs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ui_object.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/common_helpers.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_exception.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gp/gp_wrap_ogl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gp/gp_image_data.h" isTestSource="false" />
@@ -61,7 +63,6 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/geo/geo_point.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gl_api_mappings.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_resources.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

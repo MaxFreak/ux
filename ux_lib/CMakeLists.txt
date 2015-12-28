@@ -13,7 +13,7 @@ set(EXTRA_LIBS ${EXTRA_LIBS} ${SDL_LIBRARY} )
 set(SOURCE_FILES
         ux_main.cpp
         ux_app.cpp
-        SDLMain.m
+        ../SDLMain.m
         ux_exception.cpp
         ux_resource.cpp
         ux_resources.cpp
