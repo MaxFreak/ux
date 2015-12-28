@@ -15,6 +15,7 @@ using namespace ux::gp;
 ux_app::ux_app(int argc, char* args[]) :
     m_exe_file_path(""),
     m_exe_path(""),
+    m_resources_path(""),
     m_xpos(100),
     m_ypos(100),
     m_size(100),
@@ -24,6 +25,10 @@ ux_app::ux_app(int argc, char* args[]) :
 
     m_exe_file_path = args[0];
     m_exe_path = initial_path().generic_string();
+    path resources_path(m_exe_path);
+    resources_path = resources_path / "resources";
+    create_directory(resources_path);
+    m_resources_path = resources_path.generic_string();
 }
 
 ux_app::~ux_app()
@@ -113,20 +118,22 @@ int ux_app::main_loop(gp_wrap &graphic_wrap, in_device &input_device)
 {
     ux_resources app_resources;
 
-    auto img01 = app_resources.add_resource("Hallo 01", resource_type::image);
-    auto img02 = app_resources.add_resource("Hallo 02", resource_type::image);
-    auto img03 = app_resources.add_resource("Hallo 03", resource_type::image);
-    auto img04 = app_resources.add_resource("Hallo 04", resource_type::image);
-    auto fnt01 = app_resources.add_resource("Font 01", resource_type::font);
-    auto snd01 = app_resources.add_resource("Sound 01", resource_type::sound);
-    auto oth01 = app_resources.add_resource("Other 01", resource_type::other);
-    auto emp01 = app_resources.add_resource("Empty 01", resource_type::empty);
+    app_resources.load_resources_index(m_resources_path);
 
-    auto img_data02 = app_resources.get_resource(img02);
-    auto fnt_data = app_resources.get_resource(fnt01);
-
-    app_resources.remove_resource("Sound 01");
-    app_resources.remove_resource("Hallo 03");
+//    auto img01 = app_resources.add_resource("Hallo 01", resource_type::image);
+//    auto img02 = app_resources.add_resource("Hallo 02", resource_type::image);
+//    auto img03 = app_resources.add_resource("Hallo 03", resource_type::image);
+//    auto img04 = app_resources.add_resource("Hallo 04", resource_type::image);
+//    auto fnt01 = app_resources.add_resource("Font 01", resource_type::font);
+//    auto snd01 = app_resources.add_resource("Sound 01", resource_type::sound);
+//    auto oth01 = app_resources.add_resource("Other 01", resource_type::other);
+//    auto emp01 = app_resources.add_resource("Empty 01", resource_type::empty);
+//
+//    auto img_data02 = app_resources.get_resource(img02);
+//    auto fnt_data = app_resources.get_resource(fnt01);
+//
+//    app_resources.remove_resource("Sound 01");
+//    app_resources.remove_resource("Hallo 03");
 
 //    Now we want to begin our normal app process--
 //    an event loop with redrawing.

@@ -8,7 +8,7 @@ namespace ux
 {
 
 ux_resource::ux_resource(ux_string file_path, resource_type m_resource_type) : m_resource_type(m_resource_type),
-                                                                               file_path(file_path),
+                                                                               m_file_path(file_path),
                                                                                m_resource_content(nullptr)
 {
 
@@ -31,12 +31,12 @@ void ux_resource::set_resource_type(const resource_type &resource_type)
 
 const ux_string &ux_resource::get_file_path() const
 {
-    return file_path;
+    return m_file_path;
 }
 
 void ux_resource::set_file_path(const ux_string &file_path)
 {
-    ux_resource::file_path = file_path;
+    ux_resource::m_file_path = file_path;
 }
 
 } // namespace ux

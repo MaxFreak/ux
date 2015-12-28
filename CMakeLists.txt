@@ -143,6 +143,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 add_subdirectory(geo)
 add_subdirectory(gp)
 add_subdirectory(in)
+add_subdirectory(ux_tests)
 
 add_executable(ux
         ${SOURCE_FILES}

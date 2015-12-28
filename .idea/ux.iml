@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_types_and_defs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_resources.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/common_helpers.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_resources.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_exception.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gp/gp_wrap_ogl.h" isTestSource="false" />
@@ -47,7 +48,18 @@
       <sourceFolder url="file://$MODULE_DIR$/geo/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/geo/geo_point.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gl_api_mappings.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_resources.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googlemock/src/gmock-all.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googlemock/src/gmock_main.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googlemock/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/src/gtest_main.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/src/gtest-all.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/cmake/internal_utils.cmake" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/ux_check.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_tests/tests/basic_check.cpp" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
@@ -82,12 +94,14 @@
           <root url="file:///Library/Frameworks/QtScript.framework/Headers" />
           <root url="file:///Library/Frameworks/phonon.framework/Headers" />
           <root url="file:///Library/Frameworks/QtXmlPatterns.framework/Headers" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Release0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/RelWithDebInfo0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug0" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/RelWithDebInfo1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Release1" />
           <root url="file://$MODULE_DIR$/../boost_1_59_0" />
           <root url="file://$MODULE_DIR$/GSL" />
+          <root url="file://$MODULE_DIR$/ux_tests/lib/gtest/googlemock/include" />
+          <root url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/include" />
           <root url="file:///opt/X11/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Carbon.framework/Headers" />
@@ -290,12 +304,14 @@
           <root url="file:///Library/Frameworks/QtScript.framework/Headers" />
           <root url="file:///Library/Frameworks/phonon.framework/Headers" />
           <root url="file:///Library/Frameworks/QtXmlPatterns.framework/Headers" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Release0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/RelWithDebInfo0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel0" />
-          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug0" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/RelWithDebInfo1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/MinSizeRel1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Debug1" />
+          <root url="file://$USER_HOME$/Library/Caches/CLion12/cmake/generated/be6f0728/be6f0728/Release1" />
           <root url="file://$MODULE_DIR$/../boost_1_59_0" />
           <root url="file://$MODULE_DIR$/GSL" />
+          <root url="file://$MODULE_DIR$/ux_tests/lib/gtest/googlemock/include" />
+          <root url="file://$MODULE_DIR$/ux_tests/lib/gtest/googletest/include" />
           <root url="file:///opt/X11/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Carbon.framework/Headers" />

@@ -29,8 +29,41 @@ public:
     int main_loop(gp::gp_wrap &graphic_wrap, in_device &input_device);
 
 private:
+public:
+    const ux_string &get_exe_file_path() const
+    {
+        return m_exe_file_path;
+    }
+
+    void set_exe_file_path(const ux_string &exe_file_path)
+    {
+        m_exe_file_path = exe_file_path;
+    }
+
+    const ux_string &get_exe_path() const
+    {
+        return m_exe_path;
+    }
+
+    void set_exe_path(const ux_string &exe_path)
+    {
+        m_exe_path = exe_path;
+    }
+
+    const ux_string &get_resources_path() const
+    {
+        return m_resources_path;
+    }
+
+    void set_resources_path(const ux_string &resources_path)
+    {
+        m_resources_path = resources_path;
+    }
+
+private:
     ux_string m_exe_file_path;
     ux_string m_exe_path;
+    ux_string m_resources_path;
     ux_value m_xpos;
     ux_value m_ypos;
     ux_value m_size;

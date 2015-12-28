@@ -82,15 +82,25 @@ int main(int argc, char* args[])
         {
             if (exists(p))
             {
-                if (is_regular_file(p))
-                    cout << p << " size is " << file_size(p) << '\n';
-
-                else if (is_directory(p))
+                if (is_directory(p))
                 {
-                    cout << p << " is a directory containing:\n";
+                    std::vector<std::string> v;
 
-                    for (directory_entry& x : directory_iterator(p))
-                        cout << "    " << x.path() << " " <<is_directory(x) << '\n';
+                    for (auto&& x : directory_iterator(p))
+                    {
+                        v.push_back(x.path().string());
+                        path pa(x);
+                        cout << "    " << x << " " << is_directory(pa) << " " << pa.relative_path() << " " << pa.parent_path() << '\n';
+                    }
+//                    v.push_back(x.path().filename().string());
+
+                    std::sort(v.begin(), v.end());
+
+                    for (auto&& x : v)
+                    {
+                        cout << "    " << x << '\n';
+                    }
+
                 }
                 else
                     cout << p << " exists, but is not a regular file or directory\n";
@@ -98,7 +108,6 @@ int main(int argc, char* args[])
             else
                 cout << p << " does not exist\n";
         }
-
         catch (const filesystem_error& ex)
         {
             cout << ex.what() << '\n';

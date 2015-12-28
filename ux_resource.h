@@ -11,58 +11,101 @@ namespace ux
 {
 
 // a path is just the path without filename
-// a file_path is a path including filename (with extension if there is one)
+// a m_file_path is a path including filename (with extension if there is one)
 // a file_name is just the filename (with extension if there is one)
 // a folder or directory is always given as path
 
 enum class resource_type
 {
-    empty, image, font, sound, other
+    empty = -1, image, font, sound, other
 };
 
 class ux_resource
 {
-    struct data {};
+    struct data
+    {
+        virtual data* clone() const = 0;
+        virtual ~data(){};
+    };
+
     struct image_data: data
     {
-
+        data* clone() const { return new image_data(); }
     };
     struct font_data: data
     {
-
+        data* clone() const { return new font_data(); }
     };
     struct sound_data: data
     {
-
+        data* clone() const { return new sound_data(); }
     };
     struct other_data: data
     {
-
+        data* clone() const { return new other_data(); }
     };
 public:
     ux_resource(ux_string file_path, resource_type m_resource_type);
 
     virtual ~ux_resource();
 
-    virtual void load() {
+    // copy constructor
+    ux_resource(const ux_resource &org) : m_file_path(org.m_file_path), m_resource_type(org.m_resource_type),
+                                          m_resource_content(m_resource_content ? org.m_resource_content->clone() : nullptr)
+    {
+    }
+
+    // copy assignment operator
+    ux_resource &operator=(ux_resource org)
+    {
+        swap(*this, org);
+        return *this;
+    }
+
+    // move constructor
+    ux_resource(ux_resource &&temp)
+    {
+        swap(*this, temp);
+    }
+
+    friend void swap(ux_resource &first, ux_resource &second) noexcept
+    {
+        using std::swap;
+        swap(first.m_file_path, second.m_file_path);
+        swap(first.m_resource_type, second.m_resource_type);
+        swap(first.m_resource_content, second.m_resource_content);
+    }
+
+    virtual data *factory()
+    {
+        data *resource_content = nullptr;
+
         switch (m_resource_type)
         {
             case resource_type::empty:break;
             case resource_type::image:
-                m_resource_content = new image_data();
+                resource_content = new image_data();
                 break;
             case resource_type::font:
-                m_resource_content = new font_data();
+                resource_content = new font_data();
                 break;
             case resource_type::sound:
-                m_resource_content = new sound_data();
+                resource_content = new sound_data();
                 break;
             case resource_type::other:
-                m_resource_content = new other_data();
+                resource_content = new other_data();
                 break;
         }
+        return resource_content;
     };
-    virtual void unload(){
+
+    virtual void load()
+    {
+        factory();
+    };
+
+    virtual void unload()
+    {
         delete(m_resource_content);
     };
 
@@ -81,7 +124,7 @@ public:
     }
 
 private:
-    ux_string file_path;
+    ux_string m_file_path;
     resource_type m_resource_type;
     data *m_resource_content;
 };
@@ -89,3 +132,45 @@ private:
 } // namespace ux
 
 #endif //UX_UX_RESOURCE_H
+
+template<typename T>
+class kla
+{
+    std::string m_name;
+    size_t m_size;
+    std::unique_ptr<T[]> m_buffer;
+
+public:
+    // constructor
+    kla(const std::string &name = "", size_t size = 16) : m_name(name), m_size(size),
+                                                        m_buffer(size ? new T[size] : nullptr) { }
+
+    // copy constructor
+    kla(const kla &org) : m_name(org.m_name), m_size(org.m_size), m_buffer(org.m_size ? new T[org.m_size] : nullptr)
+    {
+        T *source = org.m_buffer.get();
+        T *dest = m_buffer.get();
+        std::copy(source, source + org.m_size, dest);
+    }
+
+    // copy assignment operator
+    kla &operator=(kla org)
+    {
+        swap(*this, org);
+        return *this;
+    }
+
+    // move constructor
+    kla(kla &&temp) : kla()
+    {
+        swap(*this, temp);
+    }
+
+    friend void swap(kla &first, kla &second) noexcept
+    {
+        using std::swap;
+        swap(first.m_name, second.m_name);
+        swap(first.m_size, second.m_size);
+        swap(first.m_buffer, second.m_buffer);
+    }
+};
