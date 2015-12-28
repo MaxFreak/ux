@@ -5,4 +5,4 @@ add_executable(runTests
         ux_check.cpp)
 
 target_link_libraries(runTests gtest gtest_main)
-target_link_libraries(runTests ux)
+target_link_libraries(runTests ux_lib)

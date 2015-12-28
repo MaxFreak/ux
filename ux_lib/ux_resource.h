@@ -51,7 +51,7 @@ public:
 
     // copy constructor
     ux_resource(const ux_resource &org) : m_file_path(org.m_file_path), m_resource_type(org.m_resource_type),
-                                          m_resource_content(m_resource_content ? org.m_resource_content->clone() : nullptr)
+                                          m_resource_content(org.m_resource_content ? org.m_resource_content->clone() : nullptr)
     {
     }
 

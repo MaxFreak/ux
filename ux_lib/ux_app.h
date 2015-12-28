@@ -5,7 +5,8 @@
 #ifndef UX_SDL_TEST_H
 #define UX_SDL_TEST_H
 
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
+#include <SDL.h>
 #include <OPENGL/gl.h>
 #include <OPENGL/glu.h>
 

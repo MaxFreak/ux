@@ -5,7 +5,8 @@
 #ifndef UX_GP_WRAP_OGL_SDL_H
 #define UX_GP_WRAP_OGL_SDL_H
 
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
+#include <SDL.h>
 #include <OPENGL/gl.h>
 
 #include "gp_wrap_ogl.h"

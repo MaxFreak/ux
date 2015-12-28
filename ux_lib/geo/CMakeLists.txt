@@ -10,3 +10,9 @@ set(GEO_HEADER_FILES
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geo)
 
+message(STATUS "----------------GEO----------------")
+get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+    message(STATUS "dirgeo='${dir}'")
+endforeach()
+message(STATUS "------------------------------------")

@@ -34,3 +34,11 @@ set(IN_SOURCE_FILES
 set(IN_HEADER_FILES
         ${IN_HEADER_FILES}
         PARENT_SCOPE)
+
+message(STATUS "---------------IN-------------------")
+get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+    message(STATUS "dirin='${dir}'")
+endforeach()
+message(STATUS "------------------------------------")
+
