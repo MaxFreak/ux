@@ -4,14 +4,7 @@
 cmake_minimum_required(VERSION 3.3)
 project(ux)
 
-
-
-
-
-
-
 #include(FeatureSummary)
-
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-deprecated-declarations") #-std=c++14 -stdlib=libstdc++
@@ -50,16 +43,6 @@ MESSAGE( STATUS "USE_IN:         " ${USE_IN} )
 option (USE_GL "Use OpenGL" ON)
 MESSAGE( STATUS "USE_GL:         " ${USE_GL} )
 
-if (USE_SDL)
-endif (USE_SDL)
-
-if (USE_IN)
-endif (USE_IN)
-
-if (USE_GL)
-endif (USE_GL)
-
-
 set(CMAKE_MACOSX_RPATH 1) # because of sdl
 
 set(Boost_USE_STATIC_LIBS        ON) # only find static libs
@@ -79,6 +62,15 @@ set(EXTRA_LIBS ${EXTRA_LIBS} ${OPENGL_LIBRARIES} )
 find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIR})
 set(EXTRA_LIBS ${EXTRA_LIBS} ${GLUT_LIBRARIES} )
+
+if (USE_SDL)
+endif (USE_SDL)
+
+if (USE_IN)
+endif (USE_IN)
+
+if (USE_GL)
+endif (USE_GL)
 
 #PNG_INCLUDE_DIRS, where to find png.h, etc.
 #PNG_LIBRARIES, the libraries to link against to use PNG.
@@ -121,12 +113,15 @@ include_directories(ux_lib/gp)
 include_directories(ux_lib/in)
 
 add_subdirectory(ux_lib)
+add_subdirectory(ux_edit)
 add_subdirectory(ux_tests)
 
-
-set(MY_SOURCE_FILES main.cpp SDLMain.m)
-add_executable(run_ux ${MY_SOURCE_FILES})
+#set(MY_SOURCE_FILES main.cpp SDLMain.m)
+add_executable(run_ux main.cpp SDLMain.m)
 target_link_libraries(run_ux ux_lib ${EXTRA_LIBS})
+
+add_executable(run_ux_edit main.cpp SDLMain.m)
+target_link_libraries(run_ux_edit ux_lib ${EXTRA_LIBS})
 
 message(STATUS "---------------UX-------------------")
 get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)

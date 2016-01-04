@@ -54,15 +54,18 @@ static path relative_to(path from, path to)
 
 ux_resources::ux_resources()
 {
-    m_resource_type_path.push_back("images");
-    m_resource_type_path.push_back("fonts");
-    m_resource_type_path.push_back("sounds");
-    m_resource_type_path.push_back("others");
+//    m_resource_ids.reserve(2000);
+//    m_resources_paths.reserve(2000);
 
-    m_resource_type_skin.push_back(""); // default image skin
-    m_resource_type_skin.push_back(""); // default font skin
-    m_resource_type_skin.push_back(""); // default sound skin
-    m_resource_type_skin.push_back(""); // default other skin
+    m_resources_type_path.push_back("images");
+    m_resources_type_path.push_back("fonts");
+    m_resources_type_path.push_back("sounds");
+    m_resources_type_path.push_back("others");
+
+    m_resources_type_skin.push_back(""); // default image skin
+    m_resources_type_skin.push_back(""); // default font skin
+    m_resources_type_skin.push_back(""); // default sound skin
+    m_resources_type_skin.push_back(""); // default other skin
 }
 
 ux_resources::~ux_resources()
@@ -76,7 +79,7 @@ void ux_resources::setup_resources_paths(ux_string res_path)
     path resources_path(res_path);
     if (is_directory(resources_path))
     {
-        for (const ux_string &res_type_path : m_resource_type_path)
+        for (const ux_string &res_type_path : m_resources_type_path)
         {
             path res_specific_path = resources_path / res_type_path;
             if(!exists(res_specific_path))
@@ -97,7 +100,7 @@ void ux_resources::load_resources_index(ux_string res_path)
     if (is_directory(resources_path))
     {
         ux_uint dir_num = 0;
-        for (const ux_string &res_type_path : m_resource_type_path)
+        for (const ux_string &res_type_path : m_resources_type_path)
         {
             path res_specific_path = resources_path / res_type_path;
             if(exists(res_specific_path))
@@ -121,7 +124,9 @@ void ux_resources::load_resources_index_subpath(ux_string sub_path, resource_typ
         if (!is_directory(dir_entry))
         {
             res_set.emplace(dir_entry.path().filename().generic_string());
-            m_resources_paths.push_back(ux_resource(dir_entry.path().filename().generic_string(), res_type));
+
+            ux_resource resource(dir_entry.path().filename().generic_string(), res_type);
+            m_resources_paths.push_back(resource);
         }
         else
         {
@@ -129,7 +134,8 @@ void ux_resources::load_resources_index_subpath(ux_string sub_path, resource_typ
             for (directory_entry& skin_dir_entry : directory_iterator(dir_entry))
             {
                 res_set.emplace(skin_dir_entry.path().filename().generic_string());
-                m_resources_paths.push_back(ux_resource(dir_entry.path().filename().generic_string() + "/" + skin_dir_entry.path().filename().generic_string(), res_type));
+                ux_resource resource(dir_entry.path().filename().generic_string() + "/" + skin_dir_entry.path().filename().generic_string(), res_type);
+                m_resources_paths.push_back(resource);
             }
         }
     }

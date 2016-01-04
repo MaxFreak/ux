@@ -5,7 +5,7 @@ include_directories ("geo")
 include_directories ("gp")
 include_directories ("in")
 
-include_directories ("GSL")
+include_directories ("${CMAKE_SOURCE_DIR}/GSL")
 
 set(SOURCE_FILES ${SOURCE_FILES} SDLmain )
 set(EXTRA_LIBS ${EXTRA_LIBS} ${SDL_LIBRARY} )

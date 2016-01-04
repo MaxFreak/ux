@@ -16,12 +16,6 @@ namespace ux
 
 class ux_resources
 {
-    struct path_and_type
-    {
-        path_and_type(ux_string file_path, resource_type res_type) :m_path(file_path), m_type(res_type) {};
-        ux_string       m_path;
-        resource_type   m_type;
-    };
 public:
     ux_resources();
 
@@ -29,7 +23,14 @@ public:
 
     void load_resources_index(ux_string path) noexcept(false);
     const ux_resource& get_resource(ux_uint resource_id) noexcept(false);
-private:
+protected:
+    struct path_and_type
+    {
+        path_and_type(ux_string file_path, resource_type res_type) :m_path(file_path), m_type(res_type) {};
+        ux_string       m_path;
+        resource_type   m_type;
+    };
+
     void load_resources_index_subpath(ux_string sub_path, resource_type res_type) noexcept(false);
     void setup_resources_paths(ux_string path) noexcept(false);
 
@@ -40,8 +41,8 @@ private:
 
     std::vector<path_and_type> m_resource_ids;
     std::vector<ux_resource> m_resources_paths;
-    std::vector<ux_string> m_resource_type_path;
-    std::vector<ux_string> m_resource_type_skin; // current skin of resource type, empty for default skin
+    std::vector<ux_string> m_resources_type_path;
+    std::vector<ux_string> m_resources_type_skin; // current skin of resource type, empty for default skin
 };
 
 } // namespace ux

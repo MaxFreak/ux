@@ -1,4 +1,5 @@
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories ("${CMAKE_SOURCE_DIR}/GSL")
 
 add_executable(runTests
         basic_check.cpp

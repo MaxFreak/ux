@@ -3,19 +3,22 @@
 //
 
 #include "ux_resource.h"
+#include <iostream>
 
 namespace ux
 {
 
-ux_resource::ux_resource(ux_string file_path, resource_type m_resource_type) : m_resource_type(m_resource_type),
+ux_resource::ux_resource(ux_string file_path, resource_type res_type) : m_resource_type(res_type),
                                                                                m_file_path(file_path),
                                                                                m_resource_content(nullptr)
 {
-
+//        cout << "ui_object() copy: " << std::hex << this << "\n";
+    std::cout << std::hex << this << " '" << m_file_path << "' " << static_cast<int>(m_resource_type) << std::endl;
 }
 
 ux_resource::~ux_resource()
 {
+    std::cout << std::hex << this << " ~" << m_file_path << " " << static_cast<int>(m_resource_type) << std::endl;
     delete m_resource_content;
 }
 
