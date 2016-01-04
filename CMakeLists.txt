@@ -113,15 +113,21 @@ include_directories(ux_lib/gp)
 include_directories(ux_lib/in)
 
 add_subdirectory(ux_lib)
+add_subdirectory(ux_app)
 add_subdirectory(ux_edit)
 add_subdirectory(ux_tests)
 
 #set(MY_SOURCE_FILES main.cpp SDLMain.m)
-add_executable(run_ux main.cpp SDLMain.m)
-target_link_libraries(run_ux ux_lib ${EXTRA_LIBS})
+#add_executable(run_ux main.cpp SDLMain.m)
+#target_link_libraries(run_ux ux_lib ${EXTRA_LIBS})
 
-add_executable(run_ux_edit main.cpp SDLMain.m)
-target_link_libraries(run_ux_edit ux_lib ${EXTRA_LIBS})
+#add_executable(run_ux_app main.cpp SDLMain.m)
+add_executable(run_ux_app SDLMain.m)
+target_link_libraries(run_ux_app ux_app ux_lib ${EXTRA_LIBS})
+
+#add_executable(run_ux_edit main.cpp SDLMain.m)
+add_executable(run_ux_edit SDLMain.m)
+target_link_libraries(run_ux_edit ux_edit ux_lib ${EXTRA_LIBS})
 
 message(STATUS "---------------UX-------------------")
 get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)

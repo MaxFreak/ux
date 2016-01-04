@@ -1,60 +1,28 @@
 #set(CMAKE_MACOSX_RPATH 1) # because of sdl
 
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories ("geo")
-include_directories ("gp")
-include_directories ("in")
+#include_directories(${CMAKE_SOURCE_DIR})
+#include_directories ("geo")
+#include_directories ("gp")
+#include_directories ("in")
 
 include_directories ("${CMAKE_SOURCE_DIR}/GSL")
 
-set(SOURCE_FILES ${SOURCE_FILES} SDLmain )
-set(EXTRA_LIBS ${EXTRA_LIBS} ${SDL_LIBRARY} )
-
-set(SOURCE_FILES
-#        ux_main.cpp
-        ux_app.cpp
-#        ../SDLMain.m
-        ux_exception.cpp
-        ux_resource.cpp
-        ux_resources.cpp
-        )
-
-set(HEADER_FILES
-        ui_history.h
-        ui_object.h
-        ui_object_container.h
-        common_helpers.h
-        ux_app.h
-        gl_api_mappings.h
-        ux_types_and_defs.h
-        ux_exception.h
-        ux_resource.h
-        ux_resources.h
-        )
-
-#SOURCE_GROUP("Some Files" FILES ${HEADER_FILES})
-
 # add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
+# so that we will find ux_config.h
 include_directories("${PROJECT_BINARY_DIR}")
 
-add_subdirectory(geo)
-add_subdirectory(gp)
-add_subdirectory(in)
-
-#add_executable(ux
-add_library(ux_lib
-        ${SOURCE_FILES}
-        ${HEADER_FILES}
-        ${GEO_SOURCE_FILES}
-        ${GEO_HEADER_FILES}
-        ${GP_SOURCE_FILES}
-        ${GP_HEADER_FILES}
-        ${IN_SOURCE_FILES}
-        ${IN_HEADER_FILES}
-        ${TOOLS_SOURCE_FILES}
-        ${TOOLS_HEADER_FILES}
-        )
+add_library(ux_app ux_app_main.cpp)
+#        ${SOURCE_FILES}
+#        ${HEADER_FILES}
+#        ${GEO_SOURCE_FILES}
+#        ${GEO_HEADER_FILES}
+#        ${GP_SOURCE_FILES}
+#        ${GP_HEADER_FILES}
+#        ${IN_SOURCE_FILES}
+#        ${IN_HEADER_FILES}
+#        ${TOOLS_SOURCE_FILES}
+#        ${TOOLS_HEADER_FILES}
+#        )
 
 #target_include_directories(ux PUBLIC ".")
 
@@ -62,10 +30,10 @@ add_library(ux_lib
 #target_link_libraries (ux ${EXTRA_LIBS} )
 #link_libraries (${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} # if using SDL_image, obviously SDLmain # Sadly not included in SDL_LIBRARY variable)
 
-message(STATUS "-------------UX_LIB----------------")
+message(STATUS "-------------UX_APP----------------")
 get_property(dirs DIRECTORY . PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
-    message(STATUS "diruxlib='${dir}'")
+    message(STATUS "diruxapp='${dir}'")
 endforeach()
 message(STATUS "------------------------------------")
 
