@@ -43,7 +43,6 @@ in_event *in_device_sdl::GetEvent(ux_uint uiIdleTime)
     SDL_Event CurrentSDLEvent;
     in_event *pEvent = NULL;
 
-    ux::eC_Time64 kElapsedTime;
     SDL_TimerID pTimerID;
     ux_int iRes = 0;
 
