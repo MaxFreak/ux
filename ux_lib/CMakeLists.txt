@@ -30,7 +30,7 @@ set(HEADER_FILES
         ux_exception.h
         ux_resource.h
         ux_resources.h
-        )
+        sha1.cpp sha1.h)
 
 #SOURCE_GROUP("Some Files" FILES ${HEADER_FILES})
 

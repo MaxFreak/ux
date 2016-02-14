@@ -34,11 +34,11 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_app.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_exception.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_resource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_types_and_defs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ui_object.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/common_helpers.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_app.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gp/gp_wrap_ogl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gp/gp_image_data.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gp/gp_wrap.cpp" isTestSource="false" />
@@ -63,6 +63,8 @@
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/geo/geo_rectangle.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/geo/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/geo/geo_point.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_lib/sha1.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ux_lib/sha1.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/gl_api_mappings.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ux_lib/ux_resources.h" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
